@@ -1,10 +1,12 @@
+@import url('../fonts/Oxygen/Oxygen-Light.ttf');
 body {
     /*padding: 50px;*/
-    font: 14px "Lucida Grande", Helvetica, Arial, sans-serif;
+    /*font: 14px "Lucida Grande", Helvetica, Arial, sans-serif;*/
+    font-family: 'Oxygen', sans-serif;
 }
 
 a {
-    color: #00B7FF;
+    color: orange;
 }
 
 hr.light {
