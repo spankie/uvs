@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <meta name="description" content="">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title> <%= title %> </title>
+    <meta name="description" content="Voting System">
+    <meta name="author" content="Spankie Dee">
+
+    <!-- <link rel="stylesheet" href="/css/normalize.css"> -->
+    <link rel="stylesheet" href="/css/tachyons.min.css" />
+    <!--<link rel="stylesheet" href="/css/lightbox.min.css">-->
+    <link rel="stylesheet" href="/css/style.css">
+
+    <!--[if lt IE 9]>
+          <script src="https://cdnjs.cloudflare.com/ajax/libs/html5shiv/3.7.3/html5shiv.js"></script>
+      <![endif]-->
+</head>
+
+<body class="pa0">
+    <% if (page == 'login') { %>
+    <div class="" style="background: white url('images/sweet.jpeg') center no-repeat">
+    <% } else { %>
+    <div>
+    <% } %>
+        <nav class="ph0 ph3-m ph5-l bg-red white shadow-4 cf db">
+            <div class="dib v-mid">
+                <a class="ma0 white dib v-mid pa2 f3" href="/">UVS</a>
+            </div>
+            <div class="dib v-mid fr">
+                <a href="register" class="pa3 bg-dark-red white dib v-mid dim">Register</a>
+                <!--<a href="admin" class="pa3 bg-dark-red white dib v-mid dim">Admin</a>-->
+            </div>
+        </nav>
+    <% if (page == 'login') { %>
+        <div class="ph0 ph3-m ph5-l pv5 cf">
+        <!-- remember to make this responsive -->
+            <div class="fl w-60 pa2">
+                <h2 class="orange">Admin Login for the Ultimate voting system</h2>
+                <p class="white">For the sake of transparency!!!</p>
+            </div>
+            <div class="fl w-40">
+                <div class="shadow-2 pa2">
+                    <form action="" method="POST">
+                        <input type="text" name="username" placeholder="username" class="ba navy pa3 db mv2">
+                        <input type="password" name="password" placeholder="password" class="ba navy pa3 db mv2">
+                        <input type="submit" name="login" value="LOGIN" class="pa3 ba b-white white bg-red mv2">
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div><!-- close the nav div -->
+    <% } else { %>
+    </div><!-- close the nav div -->
+    <div class="ph0 ph3-m ph5-l pv4">
+        <div class="fl w-20">
+            <div class="shadow-4 orange">
+                <a href="#!" class="orange bb b--orange db ph3 pv3">Dashboard</a>
+                <a href="#!" class="orange bb b--orange db ph3 pv3">All Voters</a>
+                <a href="#!" class="orange bb b--orange db ph3 pv3">New Election</a>
+                <a href="#!" class="orange b--orange db ph3 pv3">Ongoing Election</a>
+            </div>
+        </div>
+
+        <div class="fl w-80">
+            <div class="ml2 ba pa2">
+                <p>class</p>
+            </div>
+        </div>
+    </div>
+    <!-- insert custom js here -->
+    <% } %>
+    <script src="/js/jquery-3.1.1.min.js"></script>
+</body>
+
+</html>
