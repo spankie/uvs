@@ -38,16 +38,16 @@
     <% if (page == 'login') { %>
         <div class="ph0 ph3-m ph5-l pv5 cf">
         <!-- remember to make this responsive -->
-            <div class="fl w-60 pa2">
+            <div class="fl w-70-ns pa2">
                 <h2 class="orange">Admin Login for the Ultimate voting system</h2>
                 <p class="white">For the sake of transparency!!!</p>
             </div>
-            <div class="fl w-40">
-                <div class="shadow-2 pa2">
+            <div class="fl w-30-ns tc">
+                <div class="shadow-2 pa2 tc bg-orange">
                     <form action="" method="POST">
-                        <input type="text" name="username" placeholder="username" class="ba navy pa3 db mv2">
-                        <input type="password" name="password" placeholder="password" class="ba navy pa3 db mv2">
-                        <input type="submit" name="login" value="LOGIN" class="pa3 ba b-white white bg-red mv2">
+                        <input type="text" name="username" placeholder="username" class="w-100 ba navy pa3 db mv2 tc">
+                        <input type="password" name="password" placeholder="password" class="w-100 ba navy pa3 db mv2 tc">
+                        <input type="submit" name="login" value="LOGIN" class="pa3 ba b-white white bg-red mv2 shadow-4 pointer">
                     </form>
                 </div>
             </div>
@@ -55,24 +55,35 @@
     </div><!-- close the nav div -->
     <% } else { %>
     </div><!-- close the nav div -->
-    <div class="ph0 ph3-m ph5-l pv4">
-        <div class="fl w-20">
-            <div class="shadow-4 orange">
-                <a href="#!" class="orange bb b--orange db ph3 pv3">Dashboard</a>
-                <a href="#!" class="orange bb b--orange db ph3 pv3">All Voters</a>
-                <a href="#!" class="orange bb b--orange db ph3 pv3">New Election</a>
-                <a href="#!" class="orange b--orange db ph3 pv3">Ongoing Election</a>
+
+    <div class="">
+        <div class="w-20" style="position: fixed; height: 100vh">
+            <div class="shadow-4 orange h-100" style="background: white url('images/sweet2.jpg') center no-repeat;">
+                <div class="h-100" style="background-color: rgba(2,2,2, 0.8)">
+                    <div class="h4 pa3">
+                        <p class="ma0 tc">Welcome spankie...</p>
+                    </div>
+                    <a href="#!" class="orange bb bt b--orange db ph3 pv3 no-underline dim">Dashboard</a>
+                    <a href="#!" class="orange bb b--orange db ph3 pv3 no-underline dim">All Voters</a>
+                    <a href="#!" class="orange bb b--orange db ph3 pv3 no-underline dim">New Election</a>
+                    <a href="#!" class="orange bb b--orange db ph3 pv3 no-underline dim">Ongoing Election</a>
+                    <a href="#!" class="orange bb b--orange db ph3 pv3 no-underline dim">Add Students</a>
+                    <a href="/logout" class="orange bb b--orange db ph3 pv3 no-underline dim">Logout</a>
+                </div>
             </div>
         </div>
 
-        <div class="fl w-80">
-            <div class="ml2 ba pa2">
-                <p>class</p>
+        <div class="" style="margin-left: 20%;">
+            <div class="pa2">
+                <p class="mv0">class</p>
             </div>
         </div>
     </div>
     <!-- insert custom js here -->
     <% } %>
+    <footer class="bg-red ph0 ph3-m ph5-l white pv2">
+        <p class="mv0 tc">Made with &hearts; in Nigeria</p>
+    </footer>
     <script src="/js/jquery-3.1.1.min.js"></script>
 </body>
 
