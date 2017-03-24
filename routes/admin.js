@@ -74,25 +74,27 @@ router.post('/login', function(req, res, next) {
     pool.getConnection(function(err, connection) {
         if (err) {
             console.log(err);
+            res.redirect('/admin/login?err=username+or+password+is+incorrect');
+        } else {
+            connection.query('SELECT * FROM admin WHERE username = ? AND password = ?', [body.username, body.password], function(err, result, fields) {
+                if (err) {
+                    //throw err;
+                    console.log(err);
+                    res.redirect('/admin/login?err=username+or+password+is+incorrect');
+                } else {
+                    // console.log(result);
+                    if (result.length > 0) {
+                        // TODO: look for a way to encode the cookie
+                        res.cookie('UVS', result);
+                        res.redirect('/admin');
+                    } else {
+                        res.redirect('/admin/login?err=username+or+password+is+incorrect');
+                        // console.log(result.length);
+                    }
+                }
+                connection.release();
+            });
         }
-        connection.query('SELECT * FROM admin WHERE username = ? AND password = ?', [body.username, body.password], function(err, result, fields) {
-            if (err) {
-                //throw err;
-                console.log(err);
-            }
-            // console.log(result);
-            if (result.length > 0) {
-                // TODO: look for a way to encode the cookie
-                res.cookie('UVS', result);
-                res.redirect('/admin');
-            } else {
-                res.redirect('/admin/login?err=username+or+password+is+incorrect')
-                // console.log(result.length);
-            }
-
-            connection.release();
-
-        });
     });
 });
 

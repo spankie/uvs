@@ -15,3 +15,32 @@ hr.light {
     border-top: 1px solid rgba(0, 0, 0, 0.2);
     border-bottom: 1px solid rgba(255, 255, 255, 0.4);
 }
+
+/* menu block */
+.box-shadow-menu {
+  position: relative;
+  padding-left: 1.25em;
+}
+.box-shadow-menu:before {
+  content: "";
+  position: absolute;
+  left: 0;
+  top: 0.25em;
+  width: 1em;
+  height: 0.15em;
+  background: white;
+  box-shadow: 
+    0 0.25em 0 0 white,
+    0 0.5em 0 0 white;
+}
+
+/* The slide effect animation code */
+@keyframes slide {
+    from {width: 0;}
+    to {width: 16rem;}
+}
+
+#sidenav {
+    animation-name: slide;
+    animation-duration: 0.2s;
+}
