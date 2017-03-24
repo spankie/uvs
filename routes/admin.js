@@ -7,42 +7,62 @@ var login = require('../auth/auth').login;
 
 router.use(login);
 
+/* GET login page */
+router.get('/login', function(req, res, next) {
+    var get = req.query;
+    
+    data.get_err = get.err;
+    data.page = 'login';
+    // console.log(typeof data.get_err);
+    res.render('admin', data);
+});
+
 /* GET admin dashboard page. */
 router.get('/', function(req, res, next) {
-    if (req.loggedin) {
-        data.page = 'loggedin';
-    } else {
-        data.page = 'login';
+    if (!req.loggedin) {
+        res.redirect("/admin/login");
+        return;
     }
-
+    data.page = 'loggedin';
     res.render('admin', data);
 });
 
-router.get('/login', function(req, res, next) {
-    data.page = 'login';
-    res.render('admin', data);
-});
-
-/* GET allvoter page to list all eligible voters. */
-router.get('/allvoter', function(req, res, next) {
+/* GET allvoters page to list all eligible voters. */
+router.get('/allvoters', function(req, res, next) {
+    if (!req.loggedin) {
+        res.redirect("/admin/login");
+        return;
+    }
     data.page = 'allvoters';
     res.render('admin', data);
 });
 
 /* GET newelection page to create a new election. */
 router.get('/newelection', function(req, res, next) {
+    if (!req.loggedin) {
+        res.redirect("/admin/login");
+        return;
+    }
     data.page = 'newelection';
     res.render('admin', data);
 });
 
 /* GET ongoing page to view ongoing election. */
 router.get('/ongoing', function(req, res, next) {
+    if (!req.loggedin) {
+        res.redirect("/admin/login");
+        return;
+    }
     data.page = 'ongoing';
     res.render('admin', data);
 });
 
 /* GET addstudent page to add new eligible student. */
 router.get('/addstudent', function(req, res, next) {
+    if (!req.loggedin) {
+        res.redirect("/admin/login");
+        return;
+    }
     data.page = 'addstudent';
     res.render('admin', data);
 });
@@ -66,8 +86,8 @@ router.post('/login', function(req, res, next) {
                 res.cookie('UVS', result);
                 res.redirect('/admin');
             } else {
-                console.log(result.length);
-
+                res.redirect('/admin/login?err=username+or+password+is+incorrect')
+                // console.log(result.length);
             }
 
             connection.release();
