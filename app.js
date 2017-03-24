@@ -5,7 +5,7 @@ var logger = require('morgan');
 var cookieParser = require('cookie-parser');
 var bodyParser = require('body-parser');
 
-var login = require('./auth/auth').login;
+// var login = require('./auth/auth').login;
 var index = require('./routes/index');
 var admin = require('./routes/admin');
 var register = require('./routes/register');
@@ -25,7 +25,7 @@ app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
 
 // test for login for all routes to /admin including post
-app.all("/admin", login);
+// app.all("/admin/", login);
 
 app.use('/', index);
 app.use('/admin', admin);
