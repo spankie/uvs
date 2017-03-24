@@ -22,7 +22,7 @@
 
 <body class="pa0">
     <% if (page == 'login') { %>
-    <div class="" style="background: white url('images/sweet.jpeg') center no-repeat">
+    <div class="" style="background: white url('/images/sweet.jpeg') center no-repeat">
     <% } else { %>
     <div>
     <% } %>
@@ -32,6 +32,7 @@
             </div>
             <div class="dib v-mid fr">
                 <a href="register" class="pa3 bg-dark-red white dib v-mid dim no-underline">Register</a>
+                <a href="#!" class="pa3 bg-dark-red white dib v-mid dim no-underline dn-ns">nav</a>
                 <!--<a href="admin" class="pa3 bg-dark-red white dib v-mid dim no-underline">Admin</a>-->
             </div>
         </nav>
@@ -44,7 +45,7 @@
             </div>
             <div class="fl w-30-ns tc">
                 <div class="shadow-2 pa2 tc bg-orange">
-                    <form action="" method="POST">
+                    <form action="admin/login" method="POST">
                         <input type="text" name="username" placeholder="username" class="w-100 ba navy pa3 db mv2 tc">
                         <input type="password" name="password" placeholder="password" class="w-100 ba navy pa3 db mv2 tc">
                         <input type="submit" name="login" value="LOGIN" class="pa3 ba b-white white bg-red mv2 shadow-4 pointer">
@@ -57,31 +58,43 @@
     </div><!-- close the nav div -->
 
     <div class="">
-        <div class="w-20" style="position: fixed; height: 100vh">
-            <div class="shadow-4 orange h-100" style="background: white url('images/sweet2.jpg') center no-repeat;">
+        <div class="w5 w5-ns dn dib-ns" style="position: fixed; height: 100vh">
+            <div class="shadow-4 orange h-100" style="background: white url('/images/sweet2.jpg') center no-repeat;">
                 <div class="h-100" style="background-color: rgba(2,2,2, 0.8)">
                     <div class="h4 pa3">
                         <p class="ma0 tc">Welcome spankie...</p>
                     </div>
-                    <a href="#!" class="orange bb bt b--orange db ph3 pv3 no-underline dim">Dashboard</a>
-                    <a href="#!" class="orange bb b--orange db ph3 pv3 no-underline dim">All Voters</a>
-                    <a href="#!" class="orange bb b--orange db ph3 pv3 no-underline dim">New Election</a>
-                    <a href="#!" class="orange bb b--orange db ph3 pv3 no-underline dim">Ongoing Election</a>
-                    <a href="#!" class="orange bb b--orange db ph3 pv3 no-underline dim">Add Students</a>
+                    <a href="/admin" class="orange bb bt b--orange db ph3 pv3 no-underline dim">Dashboard</a>
+                    <a href="/admin/allvoter" class="orange bb b--orange db ph3 pv3 no-underline dim">All Voters</a>
+                    <a href="/admin/newelection" class="orange bb b--orange db ph3 pv3 no-underline dim">New Election</a>
+                    <a href="/admin/ongoing" class="orange bb b--orange db ph3 pv3 no-underline dim">Ongoing Election</a>
+                    <a href="/admin/addstudent" class="orange bb b--orange db ph3 pv3 no-underline dim">Add Students</a>
                     <a href="/logout" class="orange bb b--orange db ph3 pv3 no-underline dim">Logout</a>
                 </div>
             </div>
         </div>
 
-        <div class="" style="margin-left: 20%;">
+        <div class="ml7-ns">
             <div class="pa2">
-                <p class="mv0">class</p>
+            <% if (page == 'loggedin') { %>
+                <p class="mv0">DASHBOARD</p>
+            <% } else if (page == 'allvoters') { %>
+                <p class="mv0">ALL VOTERS</p>
+            <% } else if (page == 'newelection') { %>
+                <p class="mv0">NEW ELECTION</p>
+            <% } else if (page == 'ongoing') { %>
+                <p class="mv0">ONGOING ELECTION</p>
+            <% } else if (page == 'addstudent') { %>
+                <p class="mv0">ADD STUDENT</p>
+            <% } else { %>
+                <p class="mv0">MALFORMED URL</p>
+            <% } %>
             </div>
         </div>
     </div>
     <!-- insert custom js here -->
     <% } %>
-    <footer class="bg-red ph0 ph3-m ph5-l white pv2">
+    <footer class="bg-red ph0 ph3-m ph5-l white pv2 ml7-ns">
         <p class="mv0 tc">Made with &hearts; in Nigeria</p>
     </footer>
     <script src="/js/jquery-3.1.1.min.js"></script>
