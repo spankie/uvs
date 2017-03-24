@@ -32,7 +32,11 @@
             </div>
             <div class="dib v-mid fr">
                 <a href="register" class="pa3 bg-dark-red white dib v-mid dim no-underline">Register</a>
-                <a href="#!" class="pa3 bg-dark-red white dib v-mid dim no-underline dn-ns">nav</a>
+                <% if (page != 'login') { %>
+                <span class="pa3 bg-dark-red white dib v-mid dim dn-ns pointer" onclick="toggleSideNav()">
+                    <a href="#!" class="no-underline box-shadow-menu"></a>
+                </span>
+                <% } %>
                 <!--<a href="admin" class="pa3 bg-dark-red white dib v-mid dim no-underline">Admin</a>-->
             </div>
         </nav>
@@ -64,14 +68,14 @@
     </div><!-- close the nav div -->
 
     <div class="">
-        <div class="w5 w5-ns dn dib-ns" style="position: fixed; height: 100vh">
+        <div id="sidenav" class="w5 w5-ns dn dib-ns" style="position: fixed; height: 100vh">
             <div class="shadow-4 orange h-100" style="background: white url('/images/sweet2.jpg') center no-repeat;">
                 <div class="h-100" style="background-color: rgba(0, 0, 0, 0.8)">
                     <div class="h4 pa3">
                         <p class="ma0 tc">Welcome spankie...</p>
                     </div>
                     <a href="/admin" class="orange bb bt b--orange db ph3 pv3 no-underline dim">Dashboard</a>
-                    <a href="/admin/allvoter" class="orange bb b--orange db ph3 pv3 no-underline dim">All Voters</a>
+                    <a href="/admin/allvoters" class="orange bb b--orange db ph3 pv3 no-underline dim">All Voters</a>
                     <a href="/admin/newelection" class="orange bb b--orange db ph3 pv3 no-underline dim">New Election</a>
                     <a href="/admin/ongoing" class="orange bb b--orange db ph3 pv3 no-underline dim">Ongoing Election</a>
                     <a href="/admin/addstudent" class="orange bb b--orange db ph3 pv3 no-underline dim">Add Students</a>
@@ -104,6 +108,7 @@
     </footer>
     <% } %>
     <script src="/js/jquery-3.1.1.min.js"></script>
+    <script src="/js/admin.js"></script>
 </body>
 
 </html>
