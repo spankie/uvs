@@ -45,22 +45,28 @@
             </div>
             <div class="fl w-30-ns tc">
                 <div class="shadow-2 pa2 tc bg-orange">
-                    <form action="admin/login" method="POST">
-                        <input type="text" name="username" placeholder="username" class="w-100 ba navy pa3 db mv2 tc">
-                        <input type="password" name="password" placeholder="password" class="w-100 ba navy pa3 db mv2 tc">
-                        <input type="submit" name="login" value="LOGIN" class="pa3 ba b-white white bg-red mv2 shadow-4 pointer">
+                <% if (typeof get_err != 'undefined') { %>
+                    <p class="white"><%= get_err %></p>
+                <% } %>
+                    <form action="/admin/login" method="POST">
+                        <input type="text" name="username" placeholder="username" class="w-100 ba navy pa3 db mb2 tc">
+                        <input type="password" name="password" placeholder="password" class="w-100 ba navy pa3 db mb2 tc">
+                        <input type="submit" name="login" value="LOGIN" class="pa3 ba b-white white bg-red mb2 shadow-4 pointer">
                     </form>
                 </div>
             </div>
         </div>
     </div><!-- close the nav div -->
+    <footer class="bg-red ph0 ph3-m ph5-l white pv2">
+        <p class="mv0 tc">Made with &hearts; in Nigeria</p>
+    </footer>
     <% } else { %>
     </div><!-- close the nav div -->
 
     <div class="">
         <div class="w5 w5-ns dn dib-ns" style="position: fixed; height: 100vh">
             <div class="shadow-4 orange h-100" style="background: white url('/images/sweet2.jpg') center no-repeat;">
-                <div class="h-100" style="background-color: rgba(2,2,2, 0.8)">
+                <div class="h-100" style="background-color: rgba(0, 0, 0, 0.8)">
                     <div class="h4 pa3">
                         <p class="ma0 tc">Welcome spankie...</p>
                     </div>
@@ -93,10 +99,10 @@
         </div>
     </div>
     <!-- insert custom js here -->
-    <% } %>
     <footer class="bg-red ph0 ph3-m ph5-l white pv2 ml7-ns">
         <p class="mv0 tc">Made with &hearts; in Nigeria</p>
     </footer>
+    <% } %>
     <script src="/js/jquery-3.1.1.min.js"></script>
 </body>
 
