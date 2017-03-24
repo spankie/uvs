@@ -23,7 +23,7 @@ router.post('/', function(req, res, next) {
         connection.query('SELECT * FROM admin WHERE username = ? AND password = ?', [body.username, body.password], function(err, result, fields) {
             // console.log(result);
             if (result.length > 0) {
-                // look for a way to encode the cookie
+                // TODO: look for a way to encode the cookie
                 res.cookie('UVS', result);
                 res.redirect('/admin');
             } else {
@@ -37,8 +37,6 @@ router.post('/', function(req, res, next) {
             }
         });
     });
-
-    // then set cookies and redirect admin...
 });
 
 module.exports = router;
