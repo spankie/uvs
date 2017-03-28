@@ -26,35 +26,40 @@
     <% } else { %>
     <div>
     <% } %>
-        <nav class="ph0 ph3-m ph5-l bg-red white shadow-4 cf db">
-            <div class="dib v-mid">
-                <a class="ma0 white dib v-mid pa2 f3 no-underline" href="/">UVS</a>
-            </div>
-            <div class="dib v-mid fr">
-                <a href="register" class="pa3 bg-dark-red white dib v-mid dim no-underline">Register</a>
-                <% if (page != 'login') { %>
-                <span class="pa3 bg-dark-red white dib v-mid dim dn-ns pointer" onclick="toggleSideNav()">
-                    <a href="#!" class="no-underline box-shadow-menu"></a>
-                </span>
-                <% } %>
-                <!--<a href="admin" class="pa3 bg-dark-red white dib v-mid dim no-underline">Admin</a>-->
+        <nav class="bg-red white shadow-4 cf w-100 fixed">
+            <div class="ph0 ph3-m ph5-l">
+                <div class="dib v-mid">
+                    <a class="ma0 white dib v-mid pa2 f3 no-underline" href="/">UVS</a>
+                </div>
+                <div class="dib v-mid fr">
+                    <a href="register" class="pa3 bg-dark-red white dib v-mid dim no-underline">Register</a>
+                    <% if (page != 'login') { %>
+                    <span class="pa3 bg-dark-red white dib v-mid dim dn-ns pointer" onclick="toggleSideNav()">
+                        <a href="#!" class="no-underline box-shadow-menu"></a>
+                    </span>
+                    <% } %>
+                    <!--<a href="admin" class="pa3 bg-dark-red white dib v-mid dim no-underline">Admin</a>-->
+                </div>
             </div>
         </nav>
     <% if (page == 'login') { %>
-        <div class="ph0 ph3-m ph5-l pv5 cf">
+        <div class="ph0 ph3-m ph5-l pv4 pv6-ns cf">
         <!-- remember to make this responsive -->
-            <div class="fl w-70-ns pa2">
+            <div class="fl-ns w-70-ns pa2 tc tl-ns">
                 <h2 class="orange">Admin Login for the Ultimate voting system</h2>
                 <p class="white">For the sake of transparency!!!</p>
             </div>
-            <div class="fl w-30-ns tc">
-                <div class="shadow-2 pa2 tc bg-orange">
+            <div class="fl-ns w-30-ns ph2 ph0-ns">
+                <div class="bt br bl b--red bg-red pv3">
+                    <p class="mv0 tc white">ADMIN LOGIN</p>
+                </div>
+                <div class="pa2 tc bg-orange br bb bl b--red">
                 <% if (typeof get_err != 'undefined') { %>
                     <p class="white"><%= get_err %></p>
                 <% } %>
                     <form action="/admin/login" method="POST">
-                        <input type="text" name="username" placeholder="username" class="w-100 ba navy pa3 db mb2 tc">
-                        <input type="password" name="password" placeholder="password" class="w-100 ba navy pa3 db mb2 tc">
+                        <input type="text" name="username" placeholder="username" class="w-100 ba navy pa3 db mb2 tc f4" required>
+                        <input type="password" name="password" placeholder="password" class="w-100 ba navy pa3 db mb2 tc f4" required>
                         <input type="submit" name="login" value="LOGIN" class="pa3 ba b-white white bg-red mb2 shadow-4 pointer">
                     </form>
                 </div>
@@ -68,7 +73,7 @@
     </div><!-- close the nav div -->
 
     <div class="">
-        <div id="sidenav" class="w5 w5-ns dn dib-ns" style="position: fixed; height: 100vh">
+        <div id="sidenav" class="w5 w5-ns dn dib-ns" style="position: fixed; margin-top: 50px; height: 100vh">
             <div class="shadow-4 orange h-100" style="background: white url('/images/sweet2.jpg') center no-repeat;">
                 <div class="h-100" style="background-color: rgba(0, 0, 0, 0.8)">
                     <div class="h4 pa3">
@@ -76,37 +81,52 @@
                     </div>
                     <a href="/admin" class="orange bb bt b--orange db ph3 pv3 no-underline dim">Dashboard</a>
                     <a href="/admin/allvoters" class="orange bb b--orange db ph3 pv3 no-underline dim">All Voters</a>
-                    <a href="/admin/newelection" class="orange bb b--orange db ph3 pv3 no-underline dim">New Election</a>
+                    <a href="/admin/elections" class="orange bb b--orange db ph3 pv3 no-underline dim">Elections</a>
                     <a href="/admin/ongoing" class="orange bb b--orange db ph3 pv3 no-underline dim">Ongoing Election</a>
-                    <a href="/admin/addstudent" class="orange bb b--orange db ph3 pv3 no-underline dim">Add Students</a>
+                    <a href="/admin/students" class="orange bb b--orange db ph3 pv3 no-underline dim">Students</a>
                     <a href="/logout" class="orange bb b--orange db ph3 pv3 no-underline dim">Logout</a>
                 </div>
             </div>
         </div>
 
-        <div class="ml7-ns">
-            <div class="pa2">
+        <div class="ml7-ns pt5">
+            <div class="ph2">
             <% if (page == 'loggedin') { %>
                 <p class="mv0">DASHBOARD</p>
-                <!--<p class="w5 ba">jibberish jibberish jibberish jibberish
-                jibberish and you think jibberish jibberish jibberish jibberish jibberish jibberish jibberish jibberish jibberish
-                 jibberish jibberish jibberish you are better now right? jibberish jibberish jibberish jibberish jibberish jibberish jibberish
-                  jibberish jibberish jibberish jibberish jibberish are better now right? jibberish jibberish jibberish jibberish jibberish jibberish jibberish
-                   jibberish jibberish  are better now right?  are better now right?jibberish jibberish jibberish jibberish jibberish jibberish jibberish jibberish jibberish jibberish jibberish jibberish
-                    jibberish jibberish are better now right? jibberish jibberish jibberish jibberish jibberish jibberish jibberish jibberish jibberish jibberish
-                     jibberish jibberish are better now right? jibberish jibberish jibberish jibberish jibberish jibberish jibberish jibberish
-                      jibberish jibberish jibberish jibberish are better now right? jibberish jibberish jibberish jibberish jibberish jibberish jibberish jibberish jibberish jibberish jibberish jibberish
-                       jibberish jibberish jibberish jibberish jibberish jibberish are better now right? jibberish jibberish jibberish jibberish
-                        jibberish jibberish jibberish jibberish jibberish jibberish jibberish jibberish jibberish are better now right? jibberish
-                </p>-->
             <% } else if (page == 'allvoters') { %>
                 <p class="mv0">ALL VOTERS</p>
-            <% } else if (page == 'newelection') { %>
-                <p class="mv0">NEW ELECTION</p>
+            <% } else if (page == 'elections') { %>
+                <div class="ba pa2 mb2">
+                    <p class="mv0">NEW ELECTION</p>
+                    <hr class="light">
+                    <table class="">
+                        <thead class="">
+                            <tr class="">
+                                <th class="w2 bb">S/N</th>
+                                <th class="w4 bb">TYPE</th>
+                                <th class="w4 bb">DATE</th>
+                                <th class="w4 bb">DURATION</th>
+                                <th class="w4 bb">Edit</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td>1</td>
+                                <td>General</td>
+                                <td>12/09/2016</td>
+                                <td>24 hours</td>
+                                <td><a href="#!" class="ph3 pv2 bg-green white no-underline">+</a></td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
             <% } else if (page == 'ongoing') { %>
                 <p class="mv0">ONGOING ELECTION</p>
-            <% } else if (page == 'addstudent') { %>
-                <p class="mv0">ADD STUDENT</p>
+            <% } else if (page == 'students') { %>
+                <div class="pa2 ba">
+                    <p class="mv0">STUDENTS</p>
+                                        
+                </div>
             <% } else { %>
                 <p class="mv0">MALFORMED URL</p>
             <% } %>
