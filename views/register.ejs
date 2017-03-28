@@ -21,7 +21,7 @@
 </head>
 
 <body class="pa0">
-    <div class="pb5">
+    <div class="pb5 bg-light-gray">
         <nav class="ph0 ph3-m ph5-l bg-red white shadow-4 cf db">
             <div class="dib v-mid">
                 <a class="ma0 white dib v-mid pa2 f3 no-underline" href="/">UVS</a>
@@ -31,31 +31,59 @@
                 <a href="admin" class="pa3 bg-dark-red white dib v-mid dim no-underline">Admin</a>
             </div>
         </nav>
-    </div>
 
-    <div class="ph0 ph3-m ph5-l">
-        <div class="">
-            <form action="" method="POST" class="">
-                <div class="cf mb3">
-                    <label class="fl w-20 w-30-ns dib v-mid tr pa2">Names: </label>
-                    <div class="fl w-60">
-                        <input type="text" name="fname" class="pa2 w6 dib v-mid" placeholder="First Name">
-                        <input type="text" name="mname" class="pa2 w6 dib v-mid" placeholder="Middle Name">
-                        <input type="text" name="lname" class="pa2 w6 dib v-mid" placeholder="Last Name">
+        <div class="mt2 pv2 ph1 ph3-m ph5-l">
+            <div class="pv3 navy shadow-1 bg-white">
+            <p class="f3 tc mv0 ">Register To Vote</p>
+            <hr class="light mv3">
+                <form action="/register" method="POST" class="">
+                <% if(typeof query.err != 'undefined') { %>
+                    <p class="red f4 tc"><%= query.err %></p>
+                <% } if(typeof query.status != 'undefined') { %>
+                    <p class="green f4 tc"><%= query.status %></p>
+                <% } %>
+                    <div class="cf mb3">
+                        <label class="fl w-20 w-30-ns dib v-mid tr pa2">Names: </label>
+                        <div class="fl w-60">
+                            <input type="text" name="fname" class="pa2 w6 mb1" placeholder="First Name" required>
+                            <input type="text" name="mname" class="pa2 w6 mb1" placeholder="Middle Name" required>
+                            <input type="text" name="lname" class="pa2 w6 mb1" placeholder="Last Name" required>
+                        </div>
                     </div>
-                </div>
-                <div class="cf mb3">
-                    <label class="fl w-20 w-30-ns dib v-mid tr pa2">Matric Number: </label>
-                    <input type="text" name="matno" class="pa2 w6" placeholder="12/095244056">
-                </div>
-                <div class="cf mb3">
-                    <label class="fl w-20 w-30-ns dib v-mid tr pa2">State of origin: </label>
-                    <input type="text" name="soo" class="pa2 w6" placeholder="State">
-                </div>
-            </form>
+                    <div class="cf mb3">
+                        <label class="fl w-20 w-30-ns dib v-mid tr pa2">Matric Number: </label>
+                        <input type="text" name="matno" class="pa2 w6 mv2 mv0-ns" placeholder="12/095244056" required>
+                    </div>
+                    <div class="cf mb3">
+                        <label class="fl w-20 w-30-ns dib v-mid tr pa2">Password: </label>
+                        <input type="password" name="password" class="pa2 w6 mv2 mv0-ns" placeholder="password" required>
+                    </div>
+                    <div class="cf mb3">
+                        <label class="fl w-20 w-30-ns dib v-mid tr pa2">State of origin: </label>
+                        <input type="text" name="soo" class="pa2 w6 mv2 mv0-ns" placeholder="State" required>
+                    </div>
+                    <div class="cf mb3">
+                        <label class="fl w-20 w-30-ns dib v-mid tr pa2">L.G.A: </label>
+                        <input type="text" name="lga" class="pa2 w6" placeholder="LGA" required>
+                    </div>
+                    <div class="cf mb3">
+                        <label class="fl w-30 w-30-ns dib v-mid tr pa2">Department: </label>
+                        <select name="dept" class="pa2 w6" required>
+                            <option selected disabled>Department</option>
+                            <option value="computer science">Computer Science</option>
+                        </select>
+                    </div>
+                    <div class="cf mb3">
+                        <label class="fl w-20 w-30-ns dib v-mid tr pa2"></label>
+                        <input type="submit" name="register" class="ph4 pv2 bg-orange white ba shadow-4 pointer" required>
+                    </div>
+                </form>
+            </div>
         </div>
     </div>
-
+    <footer class="bg-red ph0 ph3-m ph5-l white pv2">
+        <p class="mv0 tc">Made with &hearts; in Nigeria</p> 
+    </footer>
     <script src="/js/jquery-3.1.1.min.js"></script>
 </body>
 

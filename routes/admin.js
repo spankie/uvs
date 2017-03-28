@@ -38,12 +38,12 @@ router.get('/allvoters', function(req, res, next) {
 });
 
 /* GET newelection page to create a new election. */
-router.get('/newelection', function(req, res, next) {
+router.get('/elections', function(req, res, next) {
     if (!req.loggedin) {
         res.redirect("/admin/login");
         return;
     }
-    data.page = 'newelection';
+    data.page = 'elections';
     res.render('admin', data);
 });
 
@@ -58,12 +58,12 @@ router.get('/ongoing', function(req, res, next) {
 });
 
 /* GET addstudent page to add new eligible student. */
-router.get('/addstudent', function(req, res, next) {
+router.get('/students', function(req, res, next) {
     if (!req.loggedin) {
         res.redirect("/admin/login");
         return;
     }
-    data.page = 'addstudent';
+    data.page = 'students';
     res.render('admin', data);
 });
 
