@@ -28,12 +28,12 @@ router.get('/', function(req, res, next) {
 });
 
 /* GET allvoters page to list all eligible voters. */
-router.get('/allvoters', function(req, res, next) {
+router.get('/voters', function(req, res, next) {
     if (!req.loggedin) {
         res.redirect("/admin/login");
         return;
     }
-    data.page = 'allvoters';
+    data.page = 'voters';
     res.render('admin', data);
 });
 

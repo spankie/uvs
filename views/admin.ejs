@@ -80,7 +80,7 @@
                         <p class="ma0 tc">Welcome spankie...</p>
                     </div>
                     <a href="/admin" class="orange bb bt b--orange db ph3 pv3 no-underline dim">Dashboard</a>
-                    <a href="/admin/allvoters" class="orange bb b--orange db ph3 pv3 no-underline dim">All Voters</a>
+                    <a href="/admin/voters" class="orange bb b--orange db ph3 pv3 no-underline dim">Voters</a>
                     <a href="/admin/elections" class="orange bb b--orange db ph3 pv3 no-underline dim">Elections</a>
                     <a href="/admin/ongoing" class="orange bb b--orange db ph3 pv3 no-underline dim">Ongoing Election</a>
                     <a href="/admin/students" class="orange bb b--orange db ph3 pv3 no-underline dim">Students</a>
@@ -93,39 +93,100 @@
             <div class="ph2">
             <% if (page == 'loggedin') { %>
                 <p class="mv0">DASHBOARD</p>
-            <% } else if (page == 'allvoters') { %>
-                <p class="mv0">ALL VOTERS</p>
-            <% } else if (page == 'elections') { %>
-                <div class="ba pa2 mb2">
-                    <p class="mv0">NEW ELECTION</p>
+            <% } else if (page == 'voters') { %>
+                <div class="pa2 mb2">
+                    <p class="mv0">Voters</p>
                     <hr class="light">
-                    <table class="">
-                        <thead class="">
-                            <tr class="">
-                                <th class="w2 bb">S/N</th>
-                                <th class="w4 bb">TYPE</th>
-                                <th class="w4 bb">DATE</th>
-                                <th class="w4 bb">DURATION</th>
-                                <th class="w4 bb">Edit</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            <tr>
-                                <td>1</td>
-                                <td>General</td>
-                                <td>12/09/2016</td>
-                                <td>24 hours</td>
-                                <td><a href="#!" class="ph3 pv2 bg-green white no-underline">+</a></td>
-                            </tr>
-                        </tbody>
-                    </table>
+                    <div class="">
+                        <div class="overflow-auto">
+                            <p class="mw8 center f4 navy">List of all Voters</p>
+                            <table class="f6 w-100 mw8 center" cellspacing="0">
+                                <thead>
+                                    <tr>
+                                        <th class="fw6 bb b--black-20 tl pb3 pr3 bg-white">S/N</th>
+                                        <th class="fw6 bb b--black-20 tl pb3 pr3 bg-white">Name</th>
+                                        <th class="fw6 bb b--black-20 tl pb3 pr3 bg-white">Matric Number</th>
+                                        <th class="fw6 bb b--black-20 tl pb3 pr3 bg-white">D.O.B</th>
+                                        <th class="fw6 bb b--black-20 tl pb3 pr3 bg-white">State</th>
+                                        <th class="fw6 bb b--black-20 tl pb3 pr3 bg-white">L.G.A</th>
+                                        <th class="fw6 bb b--black-20 tl pb3 pr3 bg-white">Edit</th>
+                                    </tr>
+                                </thead>
+                                <tbody class="lh-copy">
+                                    <tr>
+                                        <td class="pv3 pr3 bb b--black-20">1</td>
+                                        <td class="pv3 pr3 bb b--black-20">Spankie Dee David</td>
+                                        <td class="pv3 pr3 bb b--black-20">12/095244056</td>
+                                        <td class="pv3 pr3 bb b--black-20">18/04</td>
+                                        <td class="pv3 pr3 bb b--black-20">Cross river</td>
+                                        <td class="pv3 pr3 bb b--black-20">Abi</td>
+                                        <td class="pv3 pr3 bb b--black-20 red">Delete/suspend</td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            <% } else if (page == 'elections') { %>
+                <div class="pa2 mb2">
+                    <p class="mv0">ELECTIONS</p>
+                    <hr class="light">
+                    <div class="">
+                        <div class="overflow-auto">
+                            <p class="mw8 center f4 navy">List of all elections</p>
+                            <table class="f6 w-100 mw8 center" cellspacing="0">
+                                <thead>
+                                    <tr>
+                                        <th class="fw6 bb b--black-20 tl pb3 pr3 bg-white">S/N</th>
+                                        <th class="fw6 bb b--black-20 tl pb3 pr3 bg-white">Type</th>
+                                        <th class="fw6 bb b--black-20 tl pb3 pr3 bg-white">Start Date</th>
+                                        <th class="fw6 bb b--black-20 tl pb3 pr3 bg-white">Duration</th>
+                                        <th class="fw6 bb b--black-20 tl pb3 pr3 bg-white">Status</th>
+                                        <th class="fw6 bb b--black-20 tl pb3 pr3 bg-white">Edit</th>
+
+                                    </tr>
+                                </thead>
+                                <tbody class="lh-copy">
+                                    <tr>
+                                        <td class="pv3 pr3 bb b--black-20">1</td>
+                                        <td class="pv3 pr3 bb b--black-20">General</td>
+                                        <td class="pv3 pr3 bb b--black-20">04/02/2017</td>
+                                        <td class="pv3 pr3 bb b--black-20">24 hours</td>
+                                        <td class="pv3 pr3 bb b--black-20">Ongoing</td>                                        
+                                        <td class="pv3 pr3 bb b--black-20"><a href="#!" class="pv1 ph2 shadow-4 f4 no-underline bg-navy white">+</a></td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
                 </div>
             <% } else if (page == 'ongoing') { %>
                 <p class="mv0">ONGOING ELECTION</p>
             <% } else if (page == 'students') { %>
-                <div class="pa2 ba">
+                <div class="pa2 mb2">
                     <p class="mv0">STUDENTS</p>
-                                        
+                    <hr class="light">
+                    <div class="">
+                        <div class="overflow-auto">
+                            <p class="mw8 center f4">List of all eligible students</p>
+                            <table class="f6 w-100 mw8 center" cellspacing="0">
+                                <thead>
+                                    <tr>
+                                        <th class="fw6 bb b--black-20 tl pb3 pr3 bg-white">Name</th>
+                                        <th class="fw6 bb b--black-20 tl pb3 pr3 bg-white">Matric Number</th>
+                                        <th class="fw6 bb b--black-20 tl pb3 pr3 bg-white">D.O.B</th>
+                                    </tr>
+                                </thead>
+                                <tbody class="lh-copy">
+                                    <tr>
+                                        <td class="pv3 pr3 bb b--black-20">Spankie Dee</td>
+                                        <td class="pv3 pr3 bb b--black-20">12/095244056</td>
+                                        <td class="pv3 pr3 bb b--black-20">18/04</td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
                 </div>
             <% } else { %>
                 <p class="mv0">MALFORMED URL</p>
