@@ -44,7 +44,33 @@ router.get('/elections', function(req, res, next) {
         return;
     }
     data.page = 'elections';
+    data.query = req.query;
+
     res.render('admin', data);
+});
+
+router.post('/elections/new', function(req, res, next) {
+    var body = req.body;
+    pool.getConnection(function(err, connection){
+        if(err) {
+            console.log(err);
+            res.redirect('/admin/elections?err=Could+not+add+new+election');
+            return
+        } else {
+            connection.query("INSERT INTO elections VALUES (NULL, ?, ?, ?, 'pending')", [body.type, body.date, body.duration], function(err, results, fields) {
+                if(err) {
+                    console.log(err);
+                    res.redirect('/admin/elections?err=Could+not+add+new+election');
+                    connection.release();
+                    return;
+                } else {
+                    res.redirect('/admin/elections?status=New+Election+added.');
+                    connection.release();
+                }
+            });
+        }
+    });
+    console.log('body:', body);
 });
 
 /* GET ongoing page to view ongoing election. */
