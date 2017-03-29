@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <meta name="description" content="">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title> <%= title %> </title>
+    <meta name="description" content="Voting System">
+    <meta name="author" content="Spankie Dee">
+
+    <!-- <link rel="stylesheet" href="/css/normalize.css"> -->
+    <link rel="stylesheet" href="/css/tachyons.min.css" />
+    <!--<link rel="stylesheet" href="/css/lightbox.min.css">-->
+    <link rel="stylesheet" href="/css/style.css">
+
+    <!--[if lt IE 9]>
+          <script src="https://cdnjs.cloudflare.com/ajax/libs/html5shiv/3.7.3/html5shiv.js"></script>
+      <![endif]-->
+</head>
+
+<body class="pa0">
+    <div class="pb5 bg-light-gray"><!-- style="background: white url('/images/3089.jpg') top left repeat" -->
+        <nav class="ph0 ph3-m ph5-l bg-red white shadow-4 cf db">
+            <div class="dib v-mid">
+                <a class="ma0 white dib v-mid pa2 f3 no-underline" href="/">UVS</a>
+            </div>
+            <div class="dib v-mid fr">
+                <a href="/register" class="pa3 bg-dark-red white dib v-mid dim no-underline">Register</a>
+                <a href="/admin" class="pa3 bg-dark-red white dib v-mid dim no-underline">Admin</a>
+            </div>
+        </nav>
+        <div class="ph0 ph3-m ph5-l">
+            <div class="pa3">
+                <div class="shadow-4 bg-white">
+                    <div class="bg-orange white pa2 shadow-4">
+                        <div class="tc">
+                            <% if (typeof query.err != 'undefined') { %>
+                            <p class="mt0 white"><%= query.err %></p>
+                            <% } %>
+                            <form action="/view/election/<%= election %>" method="POST">
+                                <input type="text" name="matno" placeholder="Matric Number" class="pa2 ba b--white">
+                                <input type="text" name="password" placeholder="Password" class="pa2 ba b--white">
+                                <input type="submit" class="pv2 ph3 shadow-4 pointer bg-washed-blue ba b--white" value="VOTE">
+                            </form>
+                        </div>
+                    </div>
+                    <!--<hr class="light">-->
+                    <div class="pa2">
+                        <h2 class="navy tc">Election Leader Board</h2>
+                        <div id="president">
+                            <h2 class="navy">President</h2><hr class="light">
+                            <div class="cf pv2 ph3 mb2 shadow-4 grow"><p class="dib red">Spankie dee</p><p class="dib fr">Votes(2)</p></div>
+                            <div class="cf pv2 ph3 mb2 shadow-4 grow"><p class="dib yellow">David Spankie</p><p class="dib fr">Votes(2)</p></div>
+                        </div>
+                        <div id="sec">
+                            <h2 class="navy">Secretary</h2><hr class="light">
+                            <div class="cf pv2 ph3 mb2 shadow-4 grow"><p class="dib red">Spankie dee</p><p class="dib fr">Votes(2)</p></div>
+                            <div class="cf pv2 ph3 mb2 shadow-4 grow"><p class="dib yellow">David Spankie</p><p class="dib fr">Votes(2)</p></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <footer class="bg-red ph0 ph3-m ph5-l white pv2">
+        <p class="mv0 tc">Made with &hearts; in Nigeria</p> 
+    </footer>
+    <script src="/js/jquery-3.1.1.min.js"></script>
+</body>
+
+</html>

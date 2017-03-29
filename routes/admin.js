@@ -117,6 +117,11 @@ router.get('/students', function(req, res, next) {
 
 router.post('/login', function(req, res, next) {
     var body = req.body;
+    const cookieParams = {
+        httpOnly: true,
+        signed: true
+        // maxAge: 300000,
+    };
     // console.log(JSON.stringify(body));
     // check for login
     pool.getConnection(function(err, connection) {
@@ -133,7 +138,7 @@ router.post('/login', function(req, res, next) {
                     // console.log(result);
                     if (result.length > 0) {
                         // TODO: look for a way to encode the cookie
-                        res.cookie('UVS', result);
+                        res.cookie('UVS', result, cookieParams);
                         res.redirect('/admin');
                     } else {
                         res.redirect('/admin/login?err=username+or+password+is+incorrect');

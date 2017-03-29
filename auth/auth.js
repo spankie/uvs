@@ -1,5 +1,5 @@
 module.exports.login = function(req, res, next) {
-    var cookie = req.cookies.UVS;
+    var cookie = req.signedCookies.UVS;
     // if logged in, allow to admin page else show the login page.
     if (cookie === undefined) {
 

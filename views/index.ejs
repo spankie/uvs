@@ -35,6 +35,11 @@
         <div class="ph0 ph3-m ph5-l h5 mv4">
             <h1 class="mv0 tc red"> ULTIMATE VOTING SYSTEM ... <%= title %> </h1>
             <p class="tc light-red">Welcome to <%= title %> </p>
+            <% if(typeof election != 'undefined') { %>
+            <div class="mv4 pa3 tc">
+                <a href="/view/election/<%= election %>" class="pv3 ph4 ba b--white bg-red white no-underline">View Result/Vote</a>
+            </div>
+            <% } %>
         </div>
     </div>
     <hr class="light mh0 mh3-m mh5-l">
