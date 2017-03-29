@@ -161,21 +161,105 @@
                                         <th class="fw6 bb b--black-20 tl pb3 pr3 bg-white">Duration</th>
                                         <th class="fw6 bb b--black-20 tl pb3 pr3 bg-white">Status</th>
                                         <th class="fw6 bb b--black-20 tl pb3 pr3 bg-white">Edit</th>
-
                                     </tr>
                                 </thead>
                                 <tbody class="lh-copy">
+                                <% if (typeof elections != 'undefined') { %>
+                                <% elections.forEach(function(election, index) { %>
+                                <% var d = new Date(election.date) %>
                                     <tr>
-                                        <td class="pv3 pr3 bb b--black-20">1</td>
-                                        <td class="pv3 pr3 bb b--black-20">General</td>
-                                        <td class="pv3 pr3 bb b--black-20">04/02/2017</td>
-                                        <td class="pv3 pr3 bb b--black-20">24 hours</td>
-                                        <td class="pv3 pr3 bb b--black-20">Ongoing</td>                                        
-                                        <td class="pv3 pr3 bb b--black-20"><a href="#!" class="pv1 ph2 shadow-4 f4 no-underline bg-navy white">+</a></td>
+                                        <td class="pv3 pr3 bb b--black-20"><%= election.id %></td>
+                                        <td class="pv3 pr3 bb b--black-20"><%= election.type %></td>
+                                        <td class="pv3 pr3 bb b--black-20"><%= d.getDate() + "/" + d.getMonth() + "/" + d.getYear() %></td>
+                                        <td class="pv3 pr3 bb b--black-20"><%= election.duration %> hours</td>
+                                        <td class="pv3 pr3 bb b--black-20"><%= election.status %></td>                                        
+                                        <td class="pv3 pr3 bb b--black-20"><a href="/admin/elections/<%= election.id %>" class="pv1 ph2 shadow-4 f4 no-underline bg-navy white">+</a></td>
                                     </tr>
+                                <% }) %>
+                                <% } %>
                                 </tbody>
                             </table>
                         </div>
+                    </div>
+                </div>
+            <% } else if (page == 'editelection') { %>
+                <div class="pa2 mb2">
+                    <p class="mv0">EDIT THIS ELECTION</p>
+                    <hr class="light">
+                    <div class="mb4 cf">
+                        <div class="fl w-50">
+                            <div class="mt3 ph3">
+                                <div class="ph3 bg-washed-red cf bb b--white">
+                                    <p class="navy dib">Type :</p><p class="navy fr dib"> <%= election.type %></p>
+                                </div>
+                                <div class="ph3 bg-washed-red cf bb b--white">
+                                    <% var d = new Date(election.date) %>
+                                    <p class="navy dib">Date :</p><p class="navy fr dib"> <%= d.getDate() + "/" + d.getMonth() + "/" + d.getYear() %></p>
+                                </div>
+                                <div class="ph3 bg-washed-red cf bb b--white">
+                                    <p class="navy dib">Duration :</p><p class="navy fr dib"> <%= election.duration %> Hours</p>
+                                </div>
+                                <div class="ph3 bg-washed-red cf bb b--white">
+                                    <p class="navy dib">Status :</p><p class="navy fr dib"> <%= election.status %></p>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="fl w-50 ph3">
+                            <div class="">
+                                <h3 class="orange">Add a candidate to this election</h3>
+                                <% if (typeof query.err != 'undefined') { %>
+                                <p class="mt0 red"><%= query.err %></p>
+                                <% } %>
+                                <% if (typeof query.status != 'undefined') { %>
+                                <p class="mt0 green"><%= query.status %></p>
+                                <% } %>
+                                <form action="/admin/elections/<%= elect_id %>/candidate" method="POST">
+                                    <select name="pos" class="pa2 db mb1 w-60">
+                                        <option selected disabled>Position</option>
+                                        <option value="President">President</option>
+                                        <option value="Vice President">Vice President</option>
+                                        <option value="Sec. General">Sec. General</option>
+                                        <option value="Dep. Sec. General">Dep. Sec. Gen.</option>
+                                        <option value="Dir. of Sports">Dir. of Sports</option>
+                                        <option value="Dir. of Socials">Dir. of Socials</option>
+                                        <option value="Dir. of Info">Dir. of Info</option>
+                                        <option value="Dir. of Welfare">Dir. of Welfare</option>
+                                        <option value="Treasurer">Treasurer</option>
+                                        <option value="Provost Marshall">Provost Marshall</option>
+                                        <option value="Financial Secretary">Financial Secretary</option>
+                                    </select>
+                                    <input type="text" name="name" placeholder="Names" class="pa2 db mb1 w-60">
+                                    <input type="text" name="matno" placeholder="Matric Number" class="pa2 db mb1 w-60">
+                                    <input type="submit" value="Add" class="pa2 db pv2 ph3 bg-orange ba b--white pointer shadow-3 white">
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+                    <hr class="light">
+                    <div class="">
+                        <p class="f3 mw8 center">List of candidates</p>
+                        <table class="f6 w-100 mw8 center" cellspacing="0">
+                            <thead>
+                                <tr>
+                                    <th class="fw6 bb b--black-20 tl pb3 pr3 bg-white">Name</th>
+                                    <th class="fw6 bb b--black-20 tl pb3 pr3 bg-white">Matric Number</th>
+                                    <th class="fw6 bb b--black-20 tl pb3 pr3 bg-white">Position</th>
+                                    <th class="fw6 bb b--black-20 tl pb3 pr3 bg-white">Edit</th>
+                                </tr>
+                            </thead>
+                            <tbody class="lh-copy">
+                            <% if(typeof candidates != 'undefined') { %>
+                            <% candidates.forEach(function(candidate, index){ %>
+                                <tr>
+                                    <td class="pv3 pr3 bb b--black-20"><%= candidate.names %></td>
+                                    <td class="pv3 pr3 bb b--black-20"><%= candidate.matno %></td>
+                                    <td class="pv3 pr3 bb b--black-20"><%= candidate.position %></td>
+                                    <td class="pv3 pr3 bb b--black-20"><a href="#!" class="dim">remove</a></td>
+                                </tr>
+                            <% }) %>
+                            <% } %>
+                            </tbody>
+                        </table>
                     </div>
                 </div>
             <% } else if (page == 'ongoing') { %>

@@ -45,8 +45,29 @@ router.get('/elections', function(req, res, next) {
     }
     data.page = 'elections';
     data.query = req.query;
-
-    res.render('admin', data);
+    pool.getConnection(function(err, connection) {
+        if(err) {
+            console.log(err);
+            res.render('admin', data);
+            return;
+            // res.redirect('/admin/elections?err=Could+not+add+new+election');
+            // return;
+        } else {
+            connection.query("SELECT * FROM elections", function(err, results, fields) {
+                if(err) {
+                    console.log(err);
+                    res.render('admin', data);
+                    return;
+                } else {
+                    data.elections = results;
+                    // console.log(typeof data.elections);
+                    res.render('admin', data);
+                    return;
+                }
+                
+            });
+        }
+    });
 });
 
 router.post('/elections/new', function(req, res, next) {
@@ -66,6 +87,7 @@ router.post('/elections/new', function(req, res, next) {
                 } else {
                     res.redirect('/admin/elections?status=New+Election+added.');
                     connection.release();
+                    return;
                 }
             });
         }
@@ -119,6 +141,79 @@ router.post('/login', function(req, res, next) {
                     }
                 }
                 connection.release();
+            });
+        }
+    });
+});
+
+router.get('/elections/:election', function(req, res, next) {
+    data.page = 'editelection';
+    data.elect_id = req.params.election;
+    data.query = req.query;
+    // get the election details //
+    pool.getConnection(function(err, connection) {
+        if(err) {
+            console.log(err);
+            res.render("admin", data);            
+            return;
+        } else {
+            connection.query("SELECT * FROM elections WHERE id = ?", [req.params.election], function(err, results, fields) {
+                if(err) {
+                    console.log(err);
+                } else {
+                    if(results.length > 0) {
+                        data.election = results[0];                      
+                    }
+                    connection.query("SELECT * FROM candidates WHERE election_id = ?", [req.params.election], function(err, results, fields){
+                        if(err) {
+                            console.log(err);
+                            res.render("admin", data);
+                        } else {
+                            if(results.length > 0) {
+                                data.candidates = results;
+                                res.render("admin", data);                                
+                            } else {
+                                res.render("admin", data);
+                            }
+                        }
+                    });
+                }
+            });
+        }
+    });
+});
+
+router.post("/elections/:election/candidate", function(req, res, next) {
+    var body = req.body;
+    var p = req.params;
+    // console.log(p);
+    pool.getConnection(function(err, connection) {
+        if(err) {
+            console.log(err);
+            res.redirect('/admin/elections/' + p.election + '?err=Could+not+add+this+candidate');
+            return;
+        } else {
+            // check if the candidate has been registered before //
+            connection.query("SELECT matno FROM candidates WHERE election_id = ? AND matno = ?", [p.election, body.matno], function(err, results, fields) {
+                if(err) {
+                    res.redirect('/admin/elections/' + p.election + '?err=Could+not+add+this+candidate');
+                    connection.release();
+                } else {
+                    if(results.length > 0) {
+                        res.redirect('/admin/elections/' + p.election + '?err=This+candidate+has+been+added+already');
+                        connection.release();
+                    } else {
+                        connection.query("INSERT INTO candidates VALUES (NULL, ?, ?, ?, ?)", [p.election, body.name, body.pos, body.matno], function(err, results, fields){
+                            if(err) {
+                                console.log(err);
+                                res.redirect('/admin/elections/' + p.election + '?err=Could+not+add+this+candidate');
+                            } else {
+                                res.redirect('/admin/elections/' + p.election + '?status=New+candidate+inserted');
+                            }
+                            connection.release();
+                        });
+                    }
+                }
             });
         }
     });
