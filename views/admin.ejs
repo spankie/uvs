@@ -129,7 +129,25 @@
                 </div>
             <% } else if (page == 'elections') { %>
                 <div class="pa2 mb2">
-                    <p class="mv0">ELECTIONS</p>
+                    <div class="cf">
+                        <div class="dib">
+                            <p class="red">ELECTIONS: </p>
+                        </div>
+                        <div class="mv2 fr dib v-mid bt b--black-20 pt2">
+                            <% if (typeof query.err != 'undefined') { %>
+                            <p class="mv0 red"><%= query.err %></p>
+                            <% } %>
+                            <% if (typeof query.status != 'undefined') { %>
+                            <p class="mv0 green"><%= query.status %></p>
+                            <% } %>
+                            <form action="/admin/elections/new" method="POST" class="dib v-mid">
+                                <input type="text" name="type" placeholder="Type" class="pa2 mb1">
+                                <input type="date" name="date" placeholder="12/31/2017" class="pa1 mb1">
+                                <input type="number" name="duration" placeholder="24" class="pa2 mb1">
+                                <input type="submit" name="save" value="SAVE" class="white bg-navy ba pv2 ph3 pointer">
+                            </form>
+                        </div>
+                    </div>
                     <hr class="light">
                     <div class="">
                         <div class="overflow-auto">
