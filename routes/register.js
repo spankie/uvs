@@ -2,14 +2,25 @@ var express = require('express');
 var router = express.Router();
 var { data } = require('../models/data');
 var { pool } = require('../models/db_config');
+var login = require('../auth/auth').login;
+
+router.use(login);
 
 /* GET users listing. */
 router.get('/', function(req, res, next) {
+    if (!req.loggedin) {
+        res.redirect("/admin/login");
+        return;
+    }
     data.query = req.query;
     res.render('register', data);
 });
 
 router.post('/', function(req, res, next) {
+    if (!req.loggedin) {
+        res.redirect("/admin/login");
+        return;
+    }
     var body = req.body;
     // console.log(body.fname);
     if(body.fname != "" && body.mname != "" && body.lname != "" && body.matno != "" && body.soo != "" && body.lga != "" && body.dept != "") {
@@ -19,14 +30,14 @@ router.post('/', function(req, res, next) {
                 res.redirect('/register?err=Unable+to+register.+Please+try+again');
             } else {
                 // check if the student is eligible to register //
-                connection.query("SELECT matno FROM students WHERE matno = ?", [body.matno], function(err, results, fields) {
-                    if(err){
-                        // if there is a connection error...
-                        console.log(err);
-                        res.redirect('/register?err=Unable+to+register.+Please+try+again');
-                        conection.release();
-                    } else {
-                        if(results.length > 0) {
+                // connection.query("SELECT matno FROM students WHERE matno = ?", [body.matno], function(err, results, fields) {
+                //     if(err){
+                //         // if there is a connection error...
+                //         console.log(err);
+                //         res.redirect('/register?err=Unable+to+register.+Please+try+again');
+                //         conection.release();
+                //     } else {
+                //         if(results.length > 0) {
                             // the student is eligible to register ...
                             // now, check if matric number has been used before //
                             // Might need to check for other things //
@@ -61,13 +72,13 @@ router.post('/', function(req, res, next) {
                                     }
                                 }
                             });
-                        } else {
-                            // the matric number is not registered, therefore cannot register as a voter.
-                            res.redirect('/register?err=You+are+not+eligible+to+vote.');
-                            connection.release();
-                        }
-                    }
-                });
+                        // } else {
+                        //     // the matric number is not registered, therefore cannot register as a voter.
+                        //     res.redirect('/register?err=You+are+not+eligible+to+vote.');
+                        //     connection.release();
+                        // }
+                //     }
+                // });
                     
             }
         });
