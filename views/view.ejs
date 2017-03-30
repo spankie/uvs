@@ -39,17 +39,21 @@
                             <% if (typeof query.err != 'undefined') { %>
                             <p class="mt0 white"><%= query.err %></p>
                             <% } %>
+                            <% if(electionstatus == 'pending' || electionstatus == 'ended') { %>
+                            <p class="mv0 white f3">Election has not yet started.</p>
+                            <% } else if (electionstatus == 'started') { %>
                             <form action="/view/election/<%= election %>" method="POST">
                                 <input type="text" name="matno" placeholder="Matric Number" class="pa2 ba b--white">
-                                <input type="text" name="password" placeholder="Password" class="pa2 ba b--white">
+                                <input type="password" name="password" placeholder="Password" class="pa2 ba b--white">
                                 <input type="submit" class="pv2 ph3 shadow-4 pointer bg-washed-blue ba b--white" value="VOTE">
                             </form>
+                            <% } %>
                         </div>
                     </div>
                     <!--<hr class="light">-->
-                    <div class="pa2">
+                    <div id="votes" class="pa2">
                         <h2 class="navy tc">Election Leader Board</h2>
-                        <div id="president">
+                        <!--<div id="president">
                             <h2 class="navy">President</h2><hr class="light">
                             <div class="cf pv2 ph3 mb2 shadow-4 grow"><p class="dib red">Spankie dee</p><p class="dib fr">Votes(2)</p></div>
                             <div class="cf pv2 ph3 mb2 shadow-4 grow"><p class="dib yellow">David Spankie</p><p class="dib fr">Votes(2)</p></div>
@@ -58,7 +62,7 @@
                             <h2 class="navy">Secretary</h2><hr class="light">
                             <div class="cf pv2 ph3 mb2 shadow-4 grow"><p class="dib red">Spankie dee</p><p class="dib fr">Votes(2)</p></div>
                             <div class="cf pv2 ph3 mb2 shadow-4 grow"><p class="dib yellow">David Spankie</p><p class="dib fr">Votes(2)</p></div>
-                        </div>
+                        </div>-->
                     </div>
                 </div>
             </div>
@@ -69,6 +73,98 @@
         <p class="mv0 tc">Made with &hearts; in Nigeria</p> 
     </footer>
     <script src="/js/jquery-3.1.1.min.js"></script>
+    <script>
+        function updateCandidate(elect_id) {
+          var xhttp = new XMLHttpRequest();
+
+          xhttp.onreadystatechange = function() {
+            if (this.readyState == 4 && this.status == 200) {
+              var can = JSON.parse(this.responseText);
+              if (can.length == 0 || can.m == "err") {
+                console.log("no data...", can);
+                // document.getElementById("submit").style = "display: none";
+              } else {
+                  console.log("data:", JSON.stringify(can));
+                can.forEach(function(item) {
+                    // id = item.position.replace(/\s+/g, '');
+                    id = item.position;
+                    
+                //   var xhttp2 = new XMLHttpRequest();
+
+                //   xhttp2.onreadystatechange = function() {
+                //     if (this.readyState == 4 && this.status == 200) {
+
+                //       var name = JSON.parse(this.responseText);
+                        
+                        // div.classList.add(item.id);
+                //         div.classList.add("vote-cand")
+                //         div.classList.add("text-primary")
+
+
+                        var can = document.createElement("div");
+                        can.setAttribute("class", "cf pv2 ph3 mb2 shadow-4 grow white bg-orange");
+                        var p1 = document.createElement("p");
+                        p1.setAttribute("class", "dib");
+
+                        var p2 = document.createElement("p");
+                        p2.setAttribute("class", "dib fr");
+                        
+                        p1.appendChild(document.createTextNode(item.names));
+                        p2.appendChild(document.createTextNode("votes(" + item.votes + ")"));
+                        can.appendChild(p1);
+                        can.appendChild(p2);
+                //         var spanVote = document.createElement("span");
+                //         spanVote.setAttribute("class", "lead");
+                        
+                //         // format the names - (voterid)
+                //         spanName.appendChild(document.createTextNode(name[0].fname + " " + name[0].lname));
+                //         spanVote.appendChild(document.createTextNode(" - (" + item.voter_id + ")"));
+                //         div.appendChild(spanName);
+                //         div.appendChild(spanVote);
+                        var div = document.getElementById(id);
+                        if(div != null) {
+                            div.appendChild(can);
+                        } else {
+                            var div = document.createElement("DIV");
+                            var h2 = document.createElement("h2");
+                            h2.setAttribute("class", "navy");
+                            var hr = document.createElement("hr");
+                            hr.setAttribute("class", "light");
+
+                            div.setAttribute("id", id);
+                            h2.appendChild(document.createTextNode(item.position));
+                            div.appendChild(h2);
+                            div.appendChild(hr);
+                            div.appendChild(can);
+                            document.getElementById("votes").appendChild(div);
+                        }
+                        
+
+                //         console.log(JSON.stringify(item, null, 3));
+                        
+                //     }
+                //   }
+
+                //   xhttp2.open("POST", "/getnames/" + item.voter_id, false);
+                //   xhttp2.send();
+                })
+              }
+            }
+            
+          }
+
+          xhttp.open("POST", "/view/getvoteresult/<%= election %>", true);
+          xhttp.send();
+
+          // example : 
+          // var btn = document.createElement("DIV");        // Create a <button> element
+          // btn.setAttribute("class", "cand");
+          // var t = document.createTextNode("CLICK ME");       // Create a text node
+          // btn.appendChild(t);                                // Append the text to <button>
+          // document.getElementById("president-"+elect_id).appendChild(btn);
+        }
+        updateCandidate(<%= election %>);
+    </script>
 </body>
 
 </html>

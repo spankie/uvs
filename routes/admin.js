@@ -17,6 +17,11 @@ router.get('/login', function(req, res, next) {
     res.render('admin', data);
 });
 
+router.use(function(req, res, next){
+    data.admin = req.signedCookies.UVS[0].username;
+    next();
+});
+
 /* GET admin dashboard page. */
 router.get('/', function(req, res, next) {
     if (!req.loggedin) {
@@ -34,7 +39,19 @@ router.get('/voters', function(req, res, next) {
         return;
     }
     data.page = 'voters';
-    res.render('admin', data);
+    pool.getConnection(function(err, connection) {
+        connection.query("SELECT * FROM voters", function(err, results, fields) {
+            if(err) {
+                console.log(err);
+                data.voters = false;
+            } else {
+                data.voters = results;
+            }
+            res.render('admin', data);
+            connection.release();
+        });
+    });
+    
 });
 
 /* GET newelection page to create a new election. */
@@ -95,27 +112,45 @@ router.post('/elections/new', function(req, res, next) {
     console.log('body:', body);
 });
 
-/* GET ongoing page to view ongoing election. */
-router.get('/ongoing', function(req, res, next) {
-    if (!req.loggedin) {
-        res.redirect("/admin/login");
-        return;
-    }
-    data.page = 'ongoing';
-    res.render('admin', data);
+router.post("/savestudent", function(req, res, next) {
+    var body = req.body;
+    pool.getConnection(function(err, connection) {
+        connection.query("INSERT INTO students VALUES (NULL, ?, ?, ?, ?)", [body.matno, body.dob, body.state, body.lga], function(err, results, fields) {
+            if(err) {
+                console.log(err);
+            } else {
+                console.log("student saved");
+                res.redirect("/admin/students");
+            }
+        });
+    });
 });
+
+/* GET ongoing page to view ongoing election. */
+// router.get('/ongoing', function(req, res, next) {
+//     if (!req.loggedin) {
+//         res.redirect("/admin/login");
+//         return;
+//     }
+//     data.page = 'ongoing';
+//     res.render('admin', data);
+// });
 
 /* GET addstudent page to add new eligible student. */
-router.get('/students', function(req, res, next) {
-    if (!req.loggedin) {
-        res.redirect("/admin/login");
-        return;
-    }
-    data.page = 'students';
-    res.render('admin', data);
-});
+// router.get('/students', function(req, res, next) {
+//     if (!req.loggedin) {
+//         res.redirect("/admin/login");
+//         return;
+//     }
+//     data.page = 'students';
+//     res.render('admin', data);
+// });
 
 router.post('/login', function(req, res, next) {
+    // if (!req.loggedin) {
+    //     res.redirect("/admin/login");
+    //     return;
+    // }
     var body = req.body;
     const cookieParams = {
         httpOnly: true,
@@ -151,7 +186,41 @@ router.post('/login', function(req, res, next) {
     });
 });
 
+router.get('/elections/:election/start', function(req, res, next) {
+    if (!req.loggedin) {
+        res.redirect("/admin/login");
+        return;
+    }
+    pool.getConnection(function(err, connection) {
+        connection.query("UPDATE elections SET status = 'started' WHERE id = ?", [req.params.election], function(err, results, fields){
+            if(err) {
+                console.log(err);
+            }
+            res.redirect("/admin/elections/" + req.params.election);
+        });
+    });
+});
+
+router.get('/elections/:election/stop', function(req, res, next) {
+    if (!req.loggedin) {
+        res.redirect("/admin/login");
+        return;
+    }
+    pool.getConnection(function(err, connection) {
+        connection.query("UPDATE elections SET status = 'ended' WHERE id = ?", [req.params.election], function(err, results, fields){
+            if(err) {
+                console.log(err);
+            }
+            res.redirect("/admin/elections/" + req.params.election);
+        });
+    });
+});
+
 router.get('/elections/:election', function(req, res, next) {
+    if (!req.loggedin) {
+        res.redirect("/admin/login");
+        return;
+    }
     data.page = 'editelection';
     data.elect_id = req.params.election;
     data.query = req.query;
@@ -189,6 +258,10 @@ router.get('/elections/:election', function(req, res, next) {
 });
 
 router.post("/elections/:election/candidate", function(req, res, next) {
+    if (!req.loggedin) {
+        res.redirect("/admin/login");
+        return;
+    }
     var body = req.body;
     var p = req.params;
     // console.log(p);
@@ -208,7 +281,7 @@ router.post("/elections/:election/candidate", function(req, res, next) {
                         res.redirect('/admin/elections/' + p.election + '?err=This+candidate+has+been+added+already');
                         connection.release();
                     } else {
-                        connection.query("INSERT INTO candidates VALUES (NULL, ?, ?, ?, ?)", [p.election, body.name, body.pos, body.matno], function(err, results, fields){
+                        connection.query("INSERT INTO candidates VALUES (NULL, ?, ?, ?, ?, 0)", [p.election, body.name, body.pos, body.matno], function(err, results, fields){
                             if(err) {
                                 console.log(err);
                                 res.redirect('/admin/elections/' + p.election + '?err=Could+not+add+this+candidate');

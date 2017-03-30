@@ -32,7 +32,7 @@
                     <a class="ma0 white dib v-mid pa2 f3 no-underline" href="/">UVS</a>
                 </div>
                 <div class="dib v-mid fr">
-                    <a href="register" class="pa3 bg-dark-red white dib v-mid dim no-underline">Register</a>
+                    <a href="/register" class="pa3 bg-dark-red white dib v-mid dim no-underline">Register</a>
                     <% if (page != 'login') { %>
                     <span class="pa3 bg-dark-red white dib v-mid dim dn-ns pointer" onclick="toggleSideNav()">
                         <a href="#!" class="no-underline box-shadow-menu"></a>
@@ -77,13 +77,13 @@
             <div class="shadow-4 orange h-100" style="background: white url('/images/sweet2.jpg') center no-repeat;">
                 <div class="h-100" style="background-color: rgba(0, 0, 0, 0.8)">
                     <div class="h4 pa3">
-                        <p class="ma0 tc">Welcome spankie...</p>
+                        <p class="ma0 tc">Welcome <%= admin %>...</p>
                     </div>
                     <a href="/admin" class="orange bb bt b--orange db ph3 pv3 no-underline dim">Dashboard</a>
                     <a href="/admin/voters" class="orange bb b--orange db ph3 pv3 no-underline dim">Voters</a>
                     <a href="/admin/elections" class="orange bb b--orange db ph3 pv3 no-underline dim">Elections</a>
-                    <a href="/admin/ongoing" class="orange bb b--orange db ph3 pv3 no-underline dim">Ongoing Election</a>
-                    <a href="/admin/students" class="orange bb b--orange db ph3 pv3 no-underline dim">Students</a>
+                    <!--<a href="/admin/ongoing" class="orange bb b--orange db ph3 pv3 no-underline dim">Ongoing Election</a>
+                    <a href="/admin/students" class="orange bb b--orange db ph3 pv3 no-underline dim">Students</a>-->
                     <a href="/logout" class="orange bb b--orange db ph3 pv3 no-underline dim">Logout</a>
                 </div>
             </div>
@@ -106,22 +106,26 @@
                                         <th class="fw6 bb b--black-20 tl pb3 pr3 bg-white">S/N</th>
                                         <th class="fw6 bb b--black-20 tl pb3 pr3 bg-white">Name</th>
                                         <th class="fw6 bb b--black-20 tl pb3 pr3 bg-white">Matric Number</th>
-                                        <th class="fw6 bb b--black-20 tl pb3 pr3 bg-white">D.O.B</th>
+                                        <!--<th class="fw6 bb b--black-20 tl pb3 pr3 bg-white">D.O.B</th>-->
                                         <th class="fw6 bb b--black-20 tl pb3 pr3 bg-white">State</th>
                                         <th class="fw6 bb b--black-20 tl pb3 pr3 bg-white">L.G.A</th>
-                                        <th class="fw6 bb b--black-20 tl pb3 pr3 bg-white">Edit</th>
+                                        <!--<th class="fw6 bb b--black-20 tl pb3 pr3 bg-white">Edit</th>-->
                                     </tr>
                                 </thead>
                                 <tbody class="lh-copy">
+                                <% if(voters) { %>
+                                <% voters.forEach(function(item){ %>
                                     <tr>
-                                        <td class="pv3 pr3 bb b--black-20">1</td>
-                                        <td class="pv3 pr3 bb b--black-20">Spankie Dee David</td>
-                                        <td class="pv3 pr3 bb b--black-20">12/095244056</td>
-                                        <td class="pv3 pr3 bb b--black-20">18/04</td>
-                                        <td class="pv3 pr3 bb b--black-20">Cross river</td>
-                                        <td class="pv3 pr3 bb b--black-20">Abi</td>
-                                        <td class="pv3 pr3 bb b--black-20 red">Delete/suspend</td>
+                                        <td class="pv3 pr3 bb b--black-20"><%= item.id %></td>
+                                        <td class="pv3 pr3 bb b--black-20"><%= item.fname + " " + item.mname + " " + item.lname %></td>
+                                        <td class="pv3 pr3 bb b--black-20"><%= item.matno %></td>
+                                        <!--<td class="pv3 pr3 bb b--black-20"><%= item.dob %></td>-->
+                                        <td class="pv3 pr3 bb b--black-20"><%= item.state %></td>
+                                        <td class="pv3 pr3 bb b--black-20"><%= item.lga %></td>
+                                        <!--<td class="pv3 pr3 bb b--black-20 red">Delete/suspend</td>-->
                                     </tr>
+                                <% }) %>
+                                <% } %>
                                 </tbody>
                             </table>
                         </div>
@@ -187,7 +191,14 @@
                     <p class="mv0">EDIT THIS ELECTION</p>
                     <hr class="light">
                     <div class="mb4 cf">
-                        <div class="fl w-50">
+                        <div class="fl w-50 pt2">
+                            <div class="tc">
+                        <% if(election.status == 'pending' || election.status == 'ended') { %>
+                            <a href="/admin/elections/<%= election.id %>/start" class="no-underline pa2 bg-navy white">START</a>
+                        <% } else if (election.status == 'started') { %>
+                            <a href="/admin/elections/<%= election.id %>/stop" class="no-underline pa2 bg-red white">STOP</a>
+                        <% } %>
+                            </div>
                             <div class="mt3 ph3">
                                 <div class="ph3 bg-washed-red cf bb b--white">
                                     <p class="navy dib">Type :</p><p class="navy fr dib"> <%= election.type %></p>
@@ -217,16 +228,16 @@
                                     <select name="pos" class="pa2 db mb1 w-60">
                                         <option selected disabled>Position</option>
                                         <option value="President">President</option>
-                                        <option value="Vice President">Vice President</option>
-                                        <option value="Sec. General">Sec. General</option>
-                                        <option value="Dep. Sec. General">Dep. Sec. Gen.</option>
-                                        <option value="Dir. of Sports">Dir. of Sports</option>
-                                        <option value="Dir. of Socials">Dir. of Socials</option>
-                                        <option value="Dir. of Info">Dir. of Info</option>
-                                        <option value="Dir. of Welfare">Dir. of Welfare</option>
+                                        <option value="Vice-President">Vice President</option>
+                                        <option value="Sec-General">Sec. General</option>
+                                        <option value="Dep-Sec-General">Dep. Sec. Gen.</option>
+                                        <option value="Dir-of-Sports">Dir. of Sports</option>
+                                        <option value="Dir-of-Socials">Dir. of Socials</option>
+                                        <option value="Dir-of-Info">Dir. of Info</option>
+                                        <option value="Dir-of-Welfare">Dir. of Welfare</option>
                                         <option value="Treasurer">Treasurer</option>
-                                        <option value="Provost Marshall">Provost Marshall</option>
-                                        <option value="Financial Secretary">Financial Secretary</option>
+                                        <option value="Provost-Marshall">Provost Marshall</option>
+                                        <option value="Financial-Secretary">Financial Secretary</option>
                                     </select>
                                     <input type="text" name="name" placeholder="Names" class="pa2 db mb1 w-60">
                                     <input type="text" name="matno" placeholder="Matric Number" class="pa2 db mb1 w-60">
@@ -262,15 +273,17 @@
                         </table>
                     </div>
                 </div>
-            <% } else if (page == 'ongoing') { %>
-                <p class="mv0">ONGOING ELECTION</p>
-            <% } else if (page == 'students') { %>
-                <div class="pa2 mb2">
+            <% //} else if (page == 'ongoing') { %>
+                <!--<p class="mv0">ONGOING ELECTION</p>-->
+            <% //} else if (page == 'students') { %>
+                <!--<div class="pa2 mb2">
                     <p class="mv0">STUDENTS</p>
                     <hr class="light">
                     <div class="">
                         <div class="overflow-auto">
-                            <p class="mw8 center f4">List of all eligible students</p>
+                            <div class="tc">
+                                <p class="mw8 center f4 dib">List of all eligible students</p>
+                            </div>
                             <table class="f6 w-100 mw8 center" cellspacing="0">
                                 <thead>
                                     <tr>
@@ -289,7 +302,7 @@
                             </table>
                         </div>
                     </div>
-                </div>
+                </div>-->
             <% } else { %>
                 <p class="mv0">MALFORMED URL</p>
             <% } %>

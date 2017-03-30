@@ -33,16 +33,15 @@
         </nav>
         <div class="ph0 ph3-m ph5-l">
             <div class="pa3">
-                <div class="shadow-4 bg-white">
+                <div class="shadow-4 cf bg-white pb3">
                     <div class="bg-orange white pa2 shadow-4">
                         <div class="tc">
-                            <p class="mv0 f4">Vote for a candidate!</p>
+                            <p class="mv0 f4" id="v_head">Vote for a candidate!</p>
                         </div>
                     </div>
-                    <!--<hr class="light">-->
-                    <div class="pa2">
-                        <h2 class="navy tc">Click on a candidate on every positions.</h2>
-                        <div id="president">
+                    <div id="votes" class="pa2">
+                        <h2 class="navy tc" id="v_message">Click on a candidate for each position.</h2>
+                        <!--<div id="president">
                             <h2 class="navy">President</h2><hr class="light">
                             <div class="cf pv2 ph3 mb2 shadow-4 grow"><p class="dib red">Spankie dee</p><p class="dib fr">Votes(2)</p></div>
                             <div class="cf pv2 ph3 mb2 shadow-4 grow"><p class="dib yellow">David Spankie</p><p class="dib fr">Votes(2)</p></div>
@@ -51,7 +50,11 @@
                             <h2 class="navy">Secretary</h2><hr class="light">
                             <div class="cf pv2 ph3 mb2 shadow-4 grow"><p class="dib red">Spankie dee</p><p class="dib fr">Votes(2)</p></div>
                             <div class="cf pv2 ph3 mb2 shadow-4 grow"><p class="dib yellow">David Spankie</p><p class="dib fr">Votes(2)</p></div>
-                        </div>
+                        </div>-->
+                    </div>
+                    <div class="pa2 dib fr">
+                        <a href="/logout" class="pa3 bg-red white no-underline mr3">LEAVE</a>
+                        <button class="pa3 ba bg-orange white ml3" id="submit-vote">VOTE</button>
                     </div>
                 </div>
             </div>
@@ -62,6 +65,141 @@
         <p class="mv0 tc">Made with &hearts; in Nigeria</p> 
     </footer>
     <script src="/js/jquery-3.1.1.min.js"></script>
+    <script>
+        function checknull(can) {
+            // true states that every thing is null
+            var c = true;
+            can.forEach(function(item){
+                if (item != null) {
+                    // something is not null.
+                    c = false;
+                }
+            });
+            return c;
+        }
+        function updateCandidate(elect_id) {
+            var xhttp = new XMLHttpRequest();
+
+            xhttp.onreadystatechange = function() {
+                if (this.readyState == 4 && this.status == 200) {
+                    var can = JSON.parse(this.responseText);
+                    // console.log("typeof can: " + typeof can);
+                    if (can.length == 0 || can.m == "err" || checknull(can)) {
+                        console.log("no data...", can);
+                        document.getElementById("submit-vote").style = "display: none";
+                        document.getElementById("v_message").innerHTML = "You Have finished voting!";
+                        document.getElementById("v_head").innerHTML = "You Have finished voting!";
+                    } else {
+                        // console.log("data:", JSON.stringify(can));
+                        can.forEach(function(item) {
+                            if(item != null) {
+
+                                id = item.position;
+
+                                var can = document.createElement("div");
+                                can.setAttribute("class", "cf pv2 ph3 mb2 shadow-4");
+                                can.setAttribute("id", item.id);
+                                var p1 = document.createElement("p");
+                                p1.setAttribute("class", "dib");
+
+                                var p2 = document.createElement("p");
+                                p2.setAttribute("class", "dib fr");
+                                
+                                p1.appendChild(document.createTextNode(item.names));
+                                p2.appendChild(document.createTextNode(item.matno));
+                                can.appendChild(p1);
+                                can.appendChild(p2);
+
+
+                                var div = document.getElementById(id);
+                                if(div != null) {
+                                    div.appendChild(can);
+                                } else {
+                                    var div = document.createElement("DIV");
+                                    var h2 = document.createElement("h2");
+                                    h2.setAttribute("class", "navy");
+                                    var hr = document.createElement("hr");
+                                    hr.setAttribute("class", "light");
+
+                                    div.setAttribute("id", id);
+                                    div.classList.add("cat");
+                                    h2.appendChild(document.createTextNode(item.position));
+                                    div.appendChild(h2);
+                                    div.appendChild(hr);
+                                    div.appendChild(can);
+                                    document.getElementById("votes").appendChild(div);
+                                }
+                            }
+                        });
+                        votenow();
+                    }
+                }
+            
+            }
+
+            xhttp.open("POST", "/view/getresult/<%= election %>", true);
+            xhttp.send();
+
+          // example : 
+          // var btn = document.createElement("DIV");        // Create a <button> element
+          // btn.setAttribute("class", "cand");
+          // var t = document.createTextNode("CLICK ME");       // Create a text node
+          // btn.appendChild(t);                                // Append the text to <button>
+          // document.getElementById("president-"+elect_id).appendChild(btn);
+        }
+        updateCandidate(<%= election %>);
+        voteResult = {};
+        function votenow() {
+            var elect = document.getElementById("votes").getElementsByTagName("div");
+            // console.log("elect length: ", elect.length);
+            for(var i = 0; i < elect.length; i++) {
+                // console.log("cat id:", i);
+
+                var node = elect.item(i).getElementsByTagName("div");
+                var cat = elect.item(i).id;
+
+                for (var j = 0; j < node.length; j++) {
+                    // console.log("node id:", j);
+
+                    node[j].addEventListener("click", function() {
+                        var pos = this.parentNode.id;
+                        var myid = this.id;
+                        var sibs = $("#" + myid).siblings();
+                        // console.log("i was clicked", myid);
+                        for(var k = 0; k < sibs.length; k++) {
+                            sibs.removeClass("bg-orange");
+                        }
+                        $("#" + myid).addClass("bg-orange");
+                        voteResult[pos] = myid;
+                        // console.log("my result: ", JSON.stringify(voteResult));
+                    })
+                }
+            }
+        }
+
+        var saveBtn = document.getElementById("submit-vote");
+        saveBtn.addEventListener("click", function(){
+            var xhttp = new XMLHttpRequest();
+            
+            xhttp.onreadystatechange = function() {
+                if (this.readyState == 4 && this.status == 200) {
+                    var result = JSON.parse(this.responseText);
+                    if(result.message == "ok") {
+                        console.log("you voted succesfully");
+                        alert("You voted successfully")
+                        window.location = "/view/election/<%= election %>";
+                    } else if (result.message == "error") {
+                        console.log("Could not save your vote");
+                        alert("Could not save your vote")
+                    }
+                }
+            }
+
+            xhttp.open("POST", "/vote", false);
+            xhttp.setRequestHeader("Content-type", "application/json");
+            xhttp.send(JSON.stringify(voteResult));
+        })
+    </script>
 </body>
 
 </html>
