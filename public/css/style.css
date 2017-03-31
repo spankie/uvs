@@ -1,8 +1,20 @@
-@import url('../fonts/Oxygen/Oxygen-Light.ttf');
+/*@import url('../fonts/Oxygen/Oxygen-Light.ttf');*/
+@import url('../fonts/Dosis/Dosis-Regular.ttf');
+@import url('../fonts/Roboto_Condensed/RobotoCondensed-Regular.ttf');
+
+html {
+    min-width: 300px;
+    /*font-family: 'Dosis', sans-serif;*/
+}
+
 body {
     /*padding: 50px;*/
     /*font: 14px "Lucida Grande", Helvetica, Arial, sans-serif;*/
-    font-family: 'Oxygen', sans-serif;
+    /*font-family: 'Oxygen', sans-serif;*/
+    /*font-family: 'Dosis', sans-serif;*/
+    /*font-family: 'Pavanam', sans-serif;*/
+    font-family: 'RobotoCondensed', sans-serif;
+    font: "RobotoCondensed", Helvetica, Arial, sans-serif;
 }
 
 a {

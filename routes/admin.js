@@ -17,7 +17,47 @@ router.get('/login', function(req, res, next) {
     res.render('admin', data);
 });
 
+router.post('/login', function(req, res, next) {
+    var body = req.body;
+    const cookieParams = {
+        httpOnly: true,
+        signed: true
+        // maxAge: 300000,
+    };
+    // console.log(JSON.stringify(body));
+    // check for login
+    pool.getConnection(function(err, connection) {
+        if (err) {
+            console.log(err);
+            res.redirect('/admin/login?err=username+or+password+is+incorrect');
+        } else {
+            connection.query('SELECT * FROM admin WHERE username = ? AND password = ?', [body.username, body.password], function(err, result, fields) {
+                if (err) {
+                    //throw err;
+                    console.log(err);
+                    res.redirect('/admin/login?err=username+or+password+is+incorrect');
+                } else {
+                    // console.log(result);
+                    if (result.length > 0) {
+                        // TODO: look for a way to encode the cookie
+                        res.cookie('UVS', result, cookieParams);
+                        res.redirect('/admin');
+                    } else {
+                        res.redirect('/admin/login?err=username+or+password+is+incorrect');
+                        // console.log(result.length);
+                    }
+                }
+                connection.release();
+            });
+        }
+    });
+});
+
 router.use(function(req, res, next){
+    if (!req.loggedin) {
+        res.redirect("/admin/login");
+        return;
+    }
     data.admin = req.signedCookies.UVS[0].username;
     next();
 });
@@ -160,42 +200,6 @@ router.post("/savestudent", function(req, res, next) {
 //     data.page = 'students';
 //     res.render('admin', data);
 // });
-
-router.post('/login', function(req, res, next) {
-    var body = req.body;
-    const cookieParams = {
-        httpOnly: true,
-        signed: true
-        // maxAge: 300000,
-    };
-    // console.log(JSON.stringify(body));
-    // check for login
-    pool.getConnection(function(err, connection) {
-        if (err) {
-            console.log(err);
-            res.redirect('/admin/login?err=username+or+password+is+incorrect');
-        } else {
-            connection.query('SELECT * FROM admin WHERE username = ? AND password = ?', [body.username, body.password], function(err, result, fields) {
-                if (err) {
-                    //throw err;
-                    console.log(err);
-                    res.redirect('/admin/login?err=username+or+password+is+incorrect');
-                } else {
-                    // console.log(result);
-                    if (result.length > 0) {
-                        // TODO: look for a way to encode the cookie
-                        res.cookie('UVS', result, cookieParams);
-                        res.redirect('/admin');
-                    } else {
-                        res.redirect('/admin/login?err=username+or+password+is+incorrect');
-                        // console.log(result.length);
-                    }
-                }
-                connection.release();
-            });
-        }
-    });
-});
 
 router.get('/elections/:election/start', function(req, res, next) {
     if (!req.loggedin) {

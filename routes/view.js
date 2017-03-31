@@ -11,6 +11,7 @@ router.get("/election/:id", function(req, res, next) {
         connection.query("SELECT status FROM elections WHERE id = ?", [p.id], function(err, results, fields) {
             data.electionstatus = results[0].status;
             res.render("view", data);
+            connection.release();
         });
     });
 });

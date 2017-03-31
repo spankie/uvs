@@ -1,3 +1,3 @@
 module.exports.data = {
-    title: "UVS"
+    title: "Leap Development Knights"
 }
