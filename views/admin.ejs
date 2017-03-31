@@ -92,7 +92,42 @@
         <div class="ml7-ns pt5">
             <div class="ph2">
             <% if (page == 'loggedin') { %>
-                <p class="mv0">DASHBOARD</p>
+                <div class="pa2 mb2">
+                    <p class="mv0">DASHBOARD</p>     
+                    <hr class="light">
+                    <div class="cf">
+                        <div class="pa2 ba br3 white bg-orange shadow-4 mv2 mh2 fl w5 h6">
+                            <p class="f2 tc white">Voters</p>
+                            <p class="f2 tc yellow"><%= counts[0].vtrs %></p>
+                        </div>
+                        <div class="pa2 ba br3 white bg-orange shadow-4 mv2 mh2 fl w5 h6">
+                            <p class="f2 tc white">Candidates</p>
+                            <p class="f2 tc yellow"><%= counts[1].vtrs %></p>
+                        </div>
+                    </div>
+                    <hr class="light">
+                    <p class="tc f3">RESULTS</p>
+                    <table class="f6 w-100 mw8 center" cellspacing="0">
+                        <thead>
+                            <tr>
+                                <th class="fw6 bb b--black-20 tl pb3 pr3 bg-white">S/N</th>
+                                <th class="fw6 bb b--black-20 tl pb3 pr3 bg-white">Position</th>
+                                <th class="fw6 bb b--black-20 tl pb3 pr3 bg-white">Name</th>
+                                <th class="fw6 bb b--black-20 tl pb3 pr3 bg-white">Votes</th>
+                            </tr>
+                        </thead>
+                        <tbody class="lh-copy">
+                        <% candidates.forEach(function(item) { %>
+                            <tr>
+                                <td class="pv3 pr3 bb b--black-20"><%= item.id %></td>
+                                <td class="pv3 pr3 bb b--black-20"><%= item.position %></td>
+                                <td class="pv3 pr3 bb b--black-20"><%= item.names %></td>
+                                <td class="pv3 pr3 bb b--black-20"><%= item.votes %></td>
+                            </tr>
+                        <% }) %>
+                        </tbody>
+                    </table>
+                </div>
             <% } else if (page == 'voters') { %>
                 <div class="pa2 mb2">
                     <p class="mv0">Voters</p>
@@ -187,15 +222,49 @@
                     </div>
                 </div>
             <% } else if (page == 'editelection') { %>
+            <script>
+                function countUp(id, dd) {
+                    var timeDiv = document.getElementById(id);
+                    // var d = new Date();
+                    // var interval = dd - d;
+                    // var dSeconds = (dd / 1000).toFixed();
+                    // var dSeconds += 4 * 60 * 60;
+                    var time = dd.getTime();
+                    time = time + (4 * 60 * 60);
+                    var now = new Date();
+                    var dSeconds = time - (now.getTime() / 1000).toFixed();
+                    console.log("time:" + time + " now: " + now.getTime() + " dsec: " + dSeconds);
+                    var intval = setInterval(function(){
+                        
+                        if(dSeconds <= 0) {
+                            clearInterval(intval);
+                            location.href = "/admin/elections/<%= election.id %>/stop";
+                            return;
+                            // location.reload(true);
+                        }
+                        var s = (dSeconds % 60);
+                        var m = ((dSeconds - s) / 60) % 60;
+                        var h = (((dSeconds - s) / 60) - m) / 60;
+                        timeDiv.innerHTML = h + ':' + m + ':' + s;
+                        dSeconds -= 1;
+                        
+                    }, 1000);
+                }
+            </script>
                 <div class="pa2 mb2">
                     <p class="mv0">EDIT THIS ELECTION</p>
                     <hr class="light">
                     <div class="mb4 cf">
                         <div class="fl w-50 pt2">
                             <div class="tc">
+                            <% function isInt(value) { %>
+                                <% var x; %>
+                                <% return isNaN(value) ? !1 : (x = parseFloat(value), (0 | x) === x); %>
+                            <% } %>
                         <% if(election.status == 'pending' || election.status == 'ended') { %>
                             <a href="/admin/elections/<%= election.id %>/start" class="no-underline pa2 bg-navy white">START</a>
-                        <% } else if (election.status == 'started') { %>
+                            
+                        <% } else if (isInt(election.status)) { %>
                             <a href="/admin/elections/<%= election.id %>/stop" class="no-underline pa2 bg-red white">STOP</a>
                         <% } %>
                             </div>
@@ -211,7 +280,10 @@
                                     <p class="navy dib">Duration :</p><p class="navy fr dib"> <%= election.duration %> Hours</p>
                                 </div>
                                 <div class="ph3 bg-washed-red cf bb b--white">
-                                    <p class="navy dib">Status :</p><p class="navy fr dib"> <%= election.status %></p>
+                                    <p class="navy dib">Status :</p><p id="timer" class="navy fr dib"> <%= election.status %></p>
+                                    <% if (isInt(election.status)) { %>
+                                        <script>countUp("timer", new Date(<%= election.status %>));</script>
+                                    <% } %>
                                 </div>
                             </div>
                         </div>
