@@ -39,11 +39,12 @@ router.post("/", function(req, res, next) {
                     }
                 }
             }
+            connection.release();
+            res.clearCookie('voter');
+            res.setHeader('Content-Type', 'application/json');
+            res.send({message: "ok"});
         });
 
-        res.clearCookie('voter');
-        res.setHeader('Content-Type', 'application/json');
-        res.send({message: "ok"});
     } else {
         res.setHeader('Content-Type', 'application/json');
         res.send({message: "error"});
@@ -60,6 +61,8 @@ function votenow(connection, matno, key, myvote_key, election) {
                 connection.query("UPDATE candidates SET votes = (votes + 1) WHERE id = ?", [myvote_key], function(err, results, fields) {
                     console.log("voted : " + key);
                     console.log(election, myvote_key, key);
+                    connection.release();
+                    //// test the voting process once moree ///
                 });
             });
         }

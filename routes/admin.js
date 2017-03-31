@@ -29,7 +29,20 @@ router.get('/', function(req, res, next) {
         return;
     }
     data.page = 'loggedin';
-    res.render('admin', data);
+    // get number of voters, candidates, and winners of each positions //
+    pool.getConnection(function(err, connection) {
+        connection.query("SELECT COUNT(id) AS vtrs FROM voters UNION SELECT COUNT(id) FROM candidates WHERE election_id = 1", function(err, results, fields){
+            console.log(results);
+            data.counts = results;
+            connection.query("SELECT * FROM candidates WHERE election_id = 1 ORDER BY votes DESC", function(err, results, fields) {
+                data.candidates = results;
+                res.render('admin', data);
+                connection.release();
+            });
+            
+        });
+    });
+    
 });
 
 /* GET allvoters page to list all eligible voters. */
@@ -74,14 +87,15 @@ router.get('/elections', function(req, res, next) {
                 if(err) {
                     console.log(err);
                     res.render('admin', data);
+                    connection.release();
                     return;
                 } else {
                     data.elections = results;
                     // console.log(typeof data.elections);
                     res.render('admin', data);
+                    connection.release();
                     return;
                 }
-                
             });
         }
     });
@@ -109,7 +123,7 @@ router.post('/elections/new', function(req, res, next) {
             });
         }
     });
-    console.log('body:', body);
+    // console.log('body:', body);
 });
 
 router.post("/savestudent", function(req, res, next) {
@@ -122,6 +136,7 @@ router.post("/savestudent", function(req, res, next) {
                 console.log("student saved");
                 res.redirect("/admin/students");
             }
+            connection.release();
         });
     });
 });
@@ -147,10 +162,6 @@ router.post("/savestudent", function(req, res, next) {
 // });
 
 router.post('/login', function(req, res, next) {
-    // if (!req.loggedin) {
-    //     res.redirect("/admin/login");
-    //     return;
-    // }
     var body = req.body;
     const cookieParams = {
         httpOnly: true,
@@ -192,11 +203,12 @@ router.get('/elections/:election/start', function(req, res, next) {
         return;
     }
     pool.getConnection(function(err, connection) {
-        connection.query("UPDATE elections SET status = 'started' WHERE id = ?", [req.params.election], function(err, results, fields){
+        connection.query("UPDATE elections SET status = UNIX_TIMESTAMP() WHERE id = ?", [req.params.election], function(err, results, fields){
             if(err) {
                 console.log(err);
             }
             res.redirect("/admin/elections/" + req.params.election);
+            connection.release();
         });
     });
 });
@@ -212,6 +224,7 @@ router.get('/elections/:election/stop', function(req, res, next) {
                 console.log(err);
             }
             res.redirect("/admin/elections/" + req.params.election);
+            connection.release();
         });
     });
 });
@@ -234,6 +247,7 @@ router.get('/elections/:election', function(req, res, next) {
             connection.query("SELECT * FROM elections WHERE id = ?", [req.params.election], function(err, results, fields) {
                 if(err) {
                     console.log(err);
+                    connection.release();
                 } else {
                     if(results.length > 0) {
                         data.election = results[0];                      
@@ -250,6 +264,7 @@ router.get('/elections/:election', function(req, res, next) {
                                 res.render("admin", data);
                             }
                         }
+                        connection.release();
                     });
                 }
             });

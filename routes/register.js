@@ -28,6 +28,7 @@ router.post('/', function(req, res, next) {
             if (err) {
                 console.log(err);
                 res.redirect('/register?err=Unable+to+register.+Please+try+again');
+                connection.release();
             } else {
                 // check if the student is eligible to register //
                 // connection.query("SELECT matno FROM students WHERE matno = ?", [body.matno], function(err, results, fields) {
