@@ -21,20 +21,22 @@
 </head>
 
 <body class="pa0">
-    <div class="pb5" style="background: white url('images/sweet.jpeg') center no-repeat">
-        <nav class="ph0 ph3-m ph5-l bg-red white shadow-4 cf db">
-            <div class="dib v-mid">
-                <a class="ma0 white dib v-mid pa2 f3 no-underline" href="/">UVS</a>
-            </div>
-            <div class="dib v-mid fr">
-                <a href="register" class="pa3 bg-dark-red white dib v-mid dim no-underline">Register</a>
-                <a href="admin" class="pa3 bg-dark-red white dib v-mid dim no-underline">Admin</a>
+    <div class="pb5" style="background: white url('/images/sweet.jpeg') center no-repeat">
+        <nav class="bg-red white shadow-4 w-100">
+            <div class="ph0 ph3-m ph5-l cf">
+                <div class="dib v-mid">
+                    <a class="ma0 white dib v-mid pa2 f3 no-underline" href="/">LDK</a>
+                </div>
+                <div class="dib v-mid fr">
+                    <a href="register" class="pa3 bg-dark-red white dib v-mid dim no-underline">Register</a>
+                    <a href="admin" class="pa3 bg-dark-red white dib v-mid dim no-underline">Admin</a>
+                </div>
             </div>
         </nav>
         <br>
         <div class="ph0 ph3-m ph5-l h5 mv4">
-            <h1 class="mv0 tc red"> ULTIMATE VOTING SYSTEM ... <%= title %> </h1>
-            <p class="tc light-red">Welcome to <%= title %> </p>
+            <h1 class="mv0 tc red">ULTIMATE VOTING SYSTEM</h1>
+            <p class="tc white">Powered by <%= title %> </p>
             <% if(typeof election != 'undefined') { %>
             <div class="mv4 pa3 tc">
                 <a href="/view/election/<%= election %>" class="pv3 ph4 ba b--white bg-red white no-underline">View Result/Vote</a>
@@ -42,28 +44,50 @@
             <% } %>
         </div>
     </div>
-    <hr class="light mh0 mh3-m mh5-l">
+
+    <div class="ph0 ph3-m ph5-l">
+        <hr class="light">
+    </div>
+
+    <div id="slideshow1" class="slideshow-container pal w-100 w-60-m w-40-l w500p-ns center">
+        <div class="slide-deck mbl pa2 ba b--orange"><!-- style="background: white url('/images/3089.jpg') top left repeat; background-size: 20px"-->
+            <div class="slide active"><img class="w-100 br1" src="images/Effanga.JPG" alt="Image 1"></div>
+            <div class="slide dn"><img class="w-100 br1" src="images/img2017.jpg" alt="Image 2"></div>
+            <div class="slide dn"><img class="w-100 br1" src="images/comfort.jpg" alt="Image 2"></div>
+            <div class="slide dn"><img class="w-100 br1" src="images/Omgini.png" alt="Image 2"></div>
+            <div class="slide dn"><img class="w-100 br1" src="images/rita.jpg" alt="Image 2"></div>
+            <!--<div class="slide dn"><img class="w-100 br3" src="images/sweet.jpeg" alt="Image 3"></div>-->
+        </div>
+        <div class="slide-controls cf">
+            <button class="btn btn--blue fl w4 pa2 bg-orange ba white" id="left" type="button" data-slideshow="slideshow1" onclick="toggleSlides(this,'left');">Previous</button>
+            <button class="btn btn--blue fr w4 pa2 bg-orange ba white" id="right" type="button" data-slideshow="slideshow1" onclick="toggleSlides(this,'right');">Next</button>
+        </div>
+    </div>
+
+    <div class="ph0 ph3-m ph5-l">
+        <hr class="light">
+    </div>
     <div class="ph0 ph3-m ph5-l cf">
         <p class="f3 tc">ELECO MEMBERS</p>
-        <div class="pa2 fl w-25-ns">
+        <div class="pa2 fl w-100 w-25-ns">
             <div class="w-100 h-100 shadow-2 ba b--orange pa2">
                 <img src="images/avatar.jpg" width="100%" class="">
                 <p class="tc">CHAIRMAN</p>
             </div>
         </div>
-        <div class="pa2 fl w-25-ns">
+        <div class="pa2 fl w-100 w-25-ns">
             <div class="w-100 h-100 shadow-2 ba b--orange pa2">
                 <img src="images/avatar.jpg" width="100%" class="">
                 <p class="tc">SECRETARY</p>
             </div>
         </div>
-        <div class="pa2 fl w-25-ns">
+        <div class="pa2 fl w-100 w-25-ns">
             <div class="w-100 h-100 shadow-2 ba b--orange pa2">
                 <img src="images/avatar.jpg" width="100%" class="">
                 <p class="tc">MEMBER</p>
             </div>
         </div>
-        <div class="pa2 fl w-25-ns">
+        <div class="pa2 fl w-100 w-25-ns">
             <div class="w-100 h-100 shadow-2 ba b--orange pa2">
                 <img src="images/avatar.jpg" width="100%" class="">
                 <p class="tc">MEMBER</p>
@@ -72,9 +96,53 @@
     </div>
     <br>
     <footer class="bg-red ph0 ph3-m ph5-l white pv2">
-        <p class="mv0 tc">Made with &hearts; in Nigeria</p> 
+        <p class="mv0 tc">Made with &hearts; By LDK</p>
     </footer>
     <script src="/js/jquery-3.1.1.min.js"></script>
+    <script>
+        "use strict";
+
+        function toggleSlides(btn, direction) {
+
+            var slideshowId = document.getElementById(btn.getAttribute('data-slideshow'));
+            var slides = slideshowId.getElementsByClassName("slide");
+            var totalSlides = slides.length - 1;
+            var activeSlide;
+            
+            //Loop through slides and identify the active slide
+            for (var i = 0; i < slides.length; i++) {
+
+                if (slides[i].className === "slide active") {
+                    activeSlide = i;
+                    break;
+                }
+            }
+            //Determine which direction to slide
+            if (direction === "left") {
+                if (activeSlide === 0) {
+                    slides[activeSlide].className = "slide dn";
+                    slides[totalSlides].className = "slide active";
+                } else {
+                    var nextSlideL = activeSlide - 1;
+                    slides[activeSlide].className = "slide dn";
+                    slides[nextSlideL].className = "slide active";
+                }
+            } else if (direction === "right") {
+                if (activeSlide === totalSlides) {
+                    slides[activeSlide].className = "slide dn";
+                    slides[0].className = "slide active";
+                } else {
+                    var nextSlideL = activeSlide + 1;
+                    slides[activeSlide].className = "slide dn";
+                    slides[nextSlideL].className = "slide active";
+                }
+            }
+        }
+
+        var myInterval = setInterval(function(){
+            toggleSlides(document.getElementById("right"), "right");
+        }, 4000);
+    </script>
 </body>
 
 </html>
