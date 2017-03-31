@@ -98,11 +98,23 @@
                     <div class="cf">
                         <div class="pa2 ba br3 white bg-orange shadow-4 mv2 mh2 fl w5 h6">
                             <p class="f2 tc white">Voters</p>
-                            <p class="f2 tc yellow"><%= counts[0].vtrs %></p>
+                            <p class="f2 tc yellow">
+                            <% if (typeof counts[0] != 'undefined') { %>
+                            <%= counts[0].vtrs %>
+                            <% } else { %>
+                                0
+                            <% } %>
+                            </p>
                         </div>
                         <div class="pa2 ba br3 white bg-orange shadow-4 mv2 mh2 fl w5 h6">
                             <p class="f2 tc white">Candidates</p>
-                            <p class="f2 tc yellow"><%= counts[1].vtrs %></p>
+                            <p class="f2 tc yellow">
+                            <% if (typeof counts[1] != 'undefined') { %>
+                            <%= counts[1].vtrs %>
+                            <% } else { %>
+                                0
+                            <% } %>
+                            </p>
                         </div>
                     </div>
                     <hr class="light">
