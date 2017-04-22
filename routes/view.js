@@ -7,6 +7,10 @@ router.get("/election/:id", function(req, res, next) {
     data.query = req.query;
     var p = req.params;
     data.election = p.id;
+    if(isNaN(p.id)) {
+        res.redirect("/");
+        return;
+    }
     pool.getConnection(function(err, connection) {
         connection.query("SELECT status FROM elections WHERE id = ?", [p.id], function(err, results, fields) {
             data.electionstatus = results[0].status;
@@ -25,6 +29,12 @@ router.post("/election/:id", function(req, res, next) {
         // maxAge: 300000,
     };
     
+    // MAKE SURE THE ID IS A NUMBER
+    if(isNaN(p.id)) {
+        res.redirect("/");
+        return;
+    }
+
     pool.getConnection(function(err, connection) {
         if(err) {
             console.log(err);
