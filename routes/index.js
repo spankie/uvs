@@ -1,13 +1,12 @@
 var express = require('express');
 var router = express.Router();
-// var { data } = require('../models/data');
+var { data } = require('../models/data');
 // this is to eliminate other objects added to data from other routes...
 myData = {
-    title: "Leap Development Knights"
+    title: data.title
 }
 var { pool } = require('../models/db_config')
 
-// var myData = data;
 /* GET home page. */
 router.get('/', function(req, res, next) {
     // check if there is an election today. //
@@ -20,9 +19,10 @@ router.get('/', function(req, res, next) {
                 if(results.length > 0) {
                     myData.election = results[0].id;
                     console.log("ELECTION :: ", myData.election);
+                    // GET CANDIDATES TO DISPLAY THEIR PICTURES ON THE MAIN PAGE...
+                    // GET ELECO TEAM TO DISPLAY...
                     res.render('index', myData);
                 } else {
-                    // console.log("ELECTION2 :: ", data.election, data.candidates);
                     res.render('index', myData);
                 }
             }

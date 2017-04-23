@@ -71,15 +71,42 @@ router.get('/', function(req, res, next) {
     data.page = 'loggedin';
     // get number of voters, candidates, and winners of each positions //
     pool.getConnection(function(err, connection) {
-        connection.query("SELECT COUNT(id) AS vtrs FROM voters UNION SELECT COUNT(id) FROM candidates WHERE election_id = 1", function(err, results, fields){
-            console.log(results);
-            data.counts = results;
-            connection.query("SELECT * FROM candidates WHERE election_id = 1 ORDER BY votes DESC", function(err, results, fields) {
-                data.candidates = results;
+        // Check if there is an ongoing election...
+        connection.query("SELECT id FROM elections WHERE status REGEXP '^-?[0-9]+$' AND UNIX_TIMESTAMP() < (status + (duration * 3600))", function(err, results, fields) {
+            // TODO:: RELATE THAT THERE IS NO ONGING ELECTION TO THE DASHBOARD ////////
+            if (err) {
+                console.log("ERROR: ", err);
                 res.render('admin', data);
                 connection.release();
-            });
-            
+            } else {
+                if(results.length > 0) {
+                    var electionID = results[0].id
+                    connection.query("SELECT COUNT(id) AS vtrs FROM voters UNION ALL SELECT COUNT(id) FROM candidates WHERE election_id = ?", [electionID], function(err, results, fields){
+                        if(err) {
+                            console.log(err);
+                            res.render('admin', data);
+                            connection.release();
+                        } else {
+                            console.log(results);
+                            data.counts = results;
+                            if (results.length > 0) {
+                                connection.query("SELECT * FROM candidates WHERE election_id = ? ORDER BY votes DESC", [electionID], function(err, results, fields) {
+                                    data.candidates = results;
+                                    res.render('admin', data);
+                                    connection.release();
+                                });
+                            } else {
+                                res.render('admin', data);
+                                connection.release();
+                            }
+                        }
+                    });
+                } else {
+                    console.log(data);
+                    res.render('admin', data);
+                    connection.release();
+                }
+            }
         });
     });
     
