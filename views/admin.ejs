@@ -93,23 +93,23 @@
             <div class="ph2">
             <% if (page == 'loggedin') { %>
                 <div class="pa2 mb2">
-                    <p class="mv0">DASHBOARD</p>     
+                    <p class="mv0 red">DASHBOARD</p>     
                     <hr class="light">
                     <div class="cf">
-                        <div class="pa2 ba br3 white bg-orange shadow-4 mv2 mh2 fl w5 h6">
-                            <p class="f2 tc white">Voters</p>
+                        <div class="pa2 ba white bg-orange shadow-4 mv2 mh2 fl w5 h6">
+                            <p class="f2 tc white">VOTERS</p>
                             <p class="f2 tc yellow">
-                            <% if (typeof counts[0] != 'undefined') { %>
+                            <% if (typeof counts != 'undefined' && typeof counts[0] != 'undefined') { %>
                             <%= counts[0].vtrs %>
                             <% } else { %>
                                 0
                             <% } %>
                             </p>
                         </div>
-                        <div class="pa2 ba br3 white bg-orange shadow-4 mv2 mh2 fl w5 h6">
-                            <p class="f2 tc white">Candidates</p>
+                        <div class="pa2 ba white bg-orange shadow-4 mv2 mh2 fl w5 h6">
+                            <p class="f2 tc white">CANDIDATES</p>
                             <p class="f2 tc yellow">
-                            <% if (typeof counts[1] != 'undefined') { %>
+                            <% if (typeof counts != 'undefined' && typeof counts[1] != 'undefined') { %>
                             <%= counts[1].vtrs %>
                             <% } else { %>
                                 0
@@ -118,7 +118,8 @@
                         </div>
                     </div>
                     <hr class="light">
-                    <p class="tc f3">RESULTS</p>
+                    <% if(typeof candidates != 'undefined') { %>
+                    <p class="tc f3 red">RESULTS</p>
                     <table class="f6 w-100 mw8 center" cellspacing="0">
                         <thead>
                             <tr>
@@ -139,6 +140,7 @@
                         <% }) %>
                         </tbody>
                     </table>
+                    <% } %>
                 </div>
             <% } else if (page == 'voters') { %>
                 <div class="pa2 mb2">
